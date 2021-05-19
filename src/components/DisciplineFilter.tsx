@@ -1,12 +1,12 @@
 import { Category } from "@prisma/client"
-import { useState } from "react"
+//import { useState } from "react"
 
 type IDisciplineFilterProps = {
   categories: Category[]
 }
 
 const DisciplineFilter: React.FC<IDisciplineFilterProps> = (props: IDisciplineFilterProps) => { 
-  const [query, setQuery] = useState("");
+  //const [query, setQuery] = useState("");
   
   return (
     <div className="filterNav flex flex-col align-middle">

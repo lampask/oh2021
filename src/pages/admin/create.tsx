@@ -4,13 +4,13 @@ import React, { useState } from 'react'
 import Router from 'next/router'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getSession } from 'next-auth/client'
 import AdminHeader from '../../layout/AdminHeader'
 import Footer from '../../layout/Footer'
 import { Content } from '../../layout/Content'
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
   if (!session?.user) {
     return { 
@@ -24,8 +24,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     props: {}
   }
 }
-
-const Draft: React.FC = () => {
+//props: InferGetServerSidePropsType<typeof getServerSideProps>
+const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 

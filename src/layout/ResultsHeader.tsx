@@ -7,7 +7,7 @@ type IResultsHeaderProps = {
   type?: string
 }
 
-const ResultsHeader: React.FC<IResultsHeaderProps> = (props) => {
+const ResultsHeader: React.FC<IResultsHeaderProps> = () => {
   return (
     <header className="p-4 border-b border-gray-300">
       <Authbar />

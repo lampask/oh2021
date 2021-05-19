@@ -194,7 +194,7 @@ const options: NextAuthOptions = {
     async session(session, token) {
       session.accessToken = token.accessToken;
       return session;
-    },ť
+    },
   },
   adapter: Adapters.Prisma.Adapter({ prisma }),
   secret: process.env.JWT_SECRET,
