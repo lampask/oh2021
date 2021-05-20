@@ -9,7 +9,8 @@
     "export": "next export -o dist",
     "build-prod": "run-s clean build export",
     "clean": "rimraf .next dist",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@mapbox/rehype-prism": "^0.6.0",
