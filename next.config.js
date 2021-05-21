@@ -23,4 +23,7 @@ module.exports = withBundleAnalyzer({
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     JWT_SECRET: process.env.JWT_SECRET,
   },
+  future: {
+    webpack5: true,
+  },
 });
