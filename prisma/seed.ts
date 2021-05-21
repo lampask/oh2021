@@ -3,7 +3,7 @@
 import prisma from "../lib/prisma";
 
 async function main() {
-  const primaA = await prisma.class.upsert({
+  const sexta = await prisma.class.upsert({
     where: { id: 0 },
     update: {
       objectID: "489b5771-e73c-4be2-9fcc-4f3a556285cb"
@@ -16,7 +16,7 @@ async function main() {
       organising: true
     },
   })
-  console.log(primaA)
+  console.log(sexta)
 }
 
 main()

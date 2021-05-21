@@ -129,7 +129,7 @@ const options: NextAuthOptions = {
             }
           })
           if (userClassFirst) {
-            if (userClassFirst.data.value != []) {
+            if (userClassFirst.data.value.length != 0) {
               const target = await prisma.class.findUnique({ where: { objectID: userClassFirst.data.value[0] } })
               await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
             }
@@ -181,7 +181,7 @@ const options: NextAuthOptions = {
             }
           })
           if (userClassSecond) {
-            if (userClassSecond.data.value != []) {
+            if (userClassSecond.data.value.length != 0) {
               const target = await prisma.class.findUnique({ where: { objectID: userClassSecond.data.value[0] } })
               await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
             }
