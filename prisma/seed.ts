@@ -1,22 +1,30 @@
 // const { PrismaClient } = require('@prisma/client')
 // const prisma = new PrismaClient()
 import prisma from "../lib/prisma";
+import * as classes from "./classes.json";
 
 async function main() {
-  const sexta = await prisma.class.upsert({
-    where: { id: 0 },
+  seedClasses();
+}
+
+async function seedClasses() {
+  for (let i = 0; i < classes.classes.length; i++)
+  {
+    const c = await prisma.class.upsert({
+    where: { id: i },
     update: {
-      objectID: "489b5771-e73c-4be2-9fcc-4f3a556285cb"
+      objectID: classes.classes[i].objectID
     },
     create: {
-      id: 0,
-      name: "Sexta",
-      objectID: "489b5771-e73c-4be2-9fcc-4f3a556285cb",
-      thirdGrade: true,
-      organising: true
+      id: i,
+      name: classes.classes[i].name,
+      objectID: classes.classes[i].objectID,
+      thirdGrade: classes.classes[i].thirdGrade,
+      organising: classes.classes[i].organising
     },
   })
-  console.log(sexta)
+  console.log(c);
+  }
 }
 
 main()
