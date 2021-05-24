@@ -11,7 +11,7 @@
     "build-prod": "run-s clean build export",
     "clean": "rimraf .next dist",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "ts-node": "ts-node --compiler-options '{\"module\":\"CommonJS\"}'",
+    "ts-node": "ts-node --compiler-options {\"\"\"module\"\"\":\"\"\"commonjs\"\"\"}",
     "postinstall": "prisma generate"
   },
   "dependencies": {

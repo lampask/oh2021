@@ -4,7 +4,7 @@ import prisma from "../lib/prisma";
 import * as classes from "./classes.json";
 
 async function main() {
-  seedClasses();
+  await seedClasses();
 }
 
 async function seedClasses() {
@@ -13,7 +13,10 @@ async function seedClasses() {
     const c = await prisma.class.upsert({
     where: { id: i },
     update: {
-      objectID: classes.classes[i].objectID
+      name: classes.classes[i].name,
+      objectID: classes.classes[i].objectID,
+      thirdGrade: classes.classes[i].thirdGrade,
+      organising: classes.classes[i].organising
     },
     create: {
       id: i,
