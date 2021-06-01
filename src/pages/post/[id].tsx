@@ -1,7 +1,6 @@
 import React from 'react'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Router from 'next/router'
-import { PostProps } from '../../components/Post'
 import { useSession } from 'next-auth/client'
 import prisma from '../../../lib/prisma'
 import { Main } from '../../layout/Main'
@@ -12,6 +11,7 @@ import { Sidebar } from '../../layout/Sidebar'
 import { markdownToHtml } from '../../utils/Markdown'
 import { Content } from '../../layout/Content'
 import format from 'date-fns/format'
+import { Post } from '@prisma/client'
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.post.findUnique({
@@ -42,20 +42,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 }
 
 async function publishPost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/publish/${id}`, {
+  await fetch(`${process.env.NEXTAUTH_URL}/api/publish/${id}`, {
     method: 'PUT',
   })
   await Router.push('/')
 }
 
 async function deletePost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/post/${id}`, {
+  await fetch(`${process.env.NEXTAUTH_URL}/api/post/${id}`, {
     method: 'DELETE',
   })
   Router.push('/')
 }
 
-const Post: React.FC<PostProps> = (props) => {
+const Post: React.FC<(Post & {author: {name: string | null;email: string;};})> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session, loading] = useSession()
   if (loading) {
     return <div>Authenticating ...</div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 
 import { PostList, IPostListProps } from '../components/PostList';
 import { Meta } from '../layout/Meta';
@@ -13,7 +13,7 @@ import Header from '../layout/Header';
 import Footer from '../layout/Footer';
 import { CalendarWidget } from '../components/widgets/CalendarWidget';
 
-const Index = (props: IPostListProps) => {
+const Index = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Main
       meta={(
@@ -42,12 +42,16 @@ const Index = (props: IPostListProps) => {
 export const getStaticProps: GetStaticProps<IPostListProps> = async () => {
   const pagination: IPaginationProps = {};
   const posts = await prisma.post.findMany({
+    orderBy: [
+      { createdAt: "desc" }
+    ],
     where: { published: true },
     include: {
       author: {
         select: { name: true },
       },
     },
+    
   })
 
   if (posts.length > Config.pagination_size) {
