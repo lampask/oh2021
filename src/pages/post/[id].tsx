@@ -55,7 +55,7 @@ async function deletePost(id: number): Promise<void> {
   Router.push('/')
 }
 
-const Post: React.FC<(Post & {author: {name: string | null;email: string;};})> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MainPost: React.FC<(Post & {author: {name: string | null;email: string;};})> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session, loading] = useSession()
   if (loading) {
     return <div>Authenticating ...</div>
@@ -118,4 +118,4 @@ const Post: React.FC<(Post & {author: {name: string | null;email: string;};})> =
   )
 }
 
-export default Post
+export default MainPost
