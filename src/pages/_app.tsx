@@ -11,10 +11,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const { session } = pageProps
   
   return (
-    <AuthProvider options={{ baseUrl: process.env.NEXTAUTH_URL }} session={session}>
+    <AuthProvider options={{ baseUrl: `${process.env.NEXTAUTH_URL}` }} session={session}>
       <Component {...pageProps} />
     </AuthProvider>
   )
 }
+
 
 export default MyApp;

@@ -49,7 +49,7 @@ model User {
   name          String?
   email         String    @unique
   emailVerified DateTime? @map(name: "email_verified")
-  image         String?
+  imageData     Bytes?
   password      String?
   role          Role          @default(USER)
   createdAt     DateTime      @default(now()) @map(name: "created_at")
@@ -125,7 +125,6 @@ model Discipline {
   name          String
   slug          String
   icon          String?
-  results       DisciplineResult[]
   category      Category?     @relation(fields: [categoryId], references: [id])
   categoryId    Int?
   tags          Tag[]         @relation(references: [id])
@@ -133,14 +132,14 @@ model Discipline {
   events        Event[]
 }
 
-model DisciplineResult {
+model EventResult {
   id            Int           @default(autoincrement()) @id
   points        Int
   description   String
   classId       Int
   class         Class         @relation(fields: [classId], references: [id])
   parentId      Int
-  discipline    Discipline    @relation(fields: [parentId], references: [id])
+  event         Event    @relation(fields: [parentId], references: [id])
 }
 
 model Tag {
@@ -157,7 +156,7 @@ model Class {
   thirdGrade    Boolean
   organising    Boolean       @default(false)
   users         User[]
-  results       DisciplineResult[]
+  results       EventResult[]
 }
 
 model Event {
@@ -165,6 +164,7 @@ model Event {
   name          String
   startDate     DateTime
   endDate       DateTime
+  results       EventResult[]
   parentId      Int
   discipline    Discipline    @relation(fields: [parentId], references: [id])
 }
