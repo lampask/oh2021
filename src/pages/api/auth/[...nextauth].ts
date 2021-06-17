@@ -1,8 +1,8 @@
-import NextAuth, { NextAuthOptions, Profile, User } from 'next-auth'
+import NextAuth, { NextAuthOptions, User } from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
 import { NextApiHandler } from 'next'
-import prisma from '../../../../lib/prisma'
+import prisma from '../../../../lib/clients/prisma'
 import { Role } from '@prisma/client'
 import axios from 'axios'
 import { JWT } from 'next-auth/jwt'
@@ -25,7 +25,7 @@ const options: NextAuthOptions = {
           pass: `${process.env.EMAIL_SERVER_PASSWORD}`
         }
       },
-      from: process.env.EMAIL_FROM
+      from: `${process.env.EMAIL_FROM}`
     }),
     {
       id: "gamca",
@@ -82,7 +82,7 @@ const options: NextAuthOptions = {
           if (userClassFirst) {
             if (userClassFirst.data.value.length != 0) {
               const target = await prisma.class.findUnique({ where: { objectID: userClassFirst.data.value[0] } })
-              await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
+              await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
             }
           }
           //#endregion
@@ -108,7 +108,7 @@ const options: NextAuthOptions = {
           if (userClassSecond) {
             if (userClassSecond.data.value.length != 0) {
               const target = await prisma.class.findUnique({ where: { objectID: userClassSecond.data.value[0] } })
-              await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
+              await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
             }
           }
           //#endregion
@@ -139,7 +139,7 @@ const options: NextAuthOptions = {
     },
   },
   adapter: Adapters.Prisma.Adapter({ prisma }),
-  secret: process.env.JWT_SECRET,
+  secret: `${process.env.JWT_SECRET}`,
 }
 
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)

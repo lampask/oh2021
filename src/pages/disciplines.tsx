@@ -1,6 +1,6 @@
-import { GetStaticProps } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import React from "react";
-import prisma from "../../lib/prisma";
+import prisma from "../../lib/clients/prisma";
 import DisciplineList, { IDisciplinesProps } from "../components/DisciplineList";
 import { IPaginationProps } from "../components/Pagination";
 import { Content } from "../layout/Content";
@@ -13,7 +13,7 @@ import { Config } from "../utils/Config";
 
 
 
-const Disciplines: React.FC<IDisciplinesProps> = (props: IDisciplinesProps) => {
+const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Main
       meta={(

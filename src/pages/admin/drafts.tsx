@@ -1,9 +1,9 @@
 // pages/drafts.tsx
 
 import React from 'react'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useSession, getSession } from 'next-auth/client'
-import prisma from '../../../lib/prisma'
+import prisma from '../../../lib/clients/prisma'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
 import Footer from '../../layout/Footer'
@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-const Drafts: React.FC<IPostListProps> = (props) => {
+const Drafts: React.FC<IPostListProps> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session] = useSession()
 
   return (

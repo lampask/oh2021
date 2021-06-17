@@ -1,15 +1,13 @@
 import React from 'react'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Router from 'next/router'
-import { PostProps } from '../../components/Post'
 import { useSession } from 'next-auth/client'
-import prisma from '../../../lib/prisma'
+import prisma from '../../../lib/clients/prisma'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
 import Header from '../../layout/Header'
 import Footer from '../../layout/Footer'
 import { Sidebar } from '../../layout/Sidebar'
-import { markdownToHtml } from '../../utils/Markdown'
 import { Content } from '../../layout/Content'
 import format from 'date-fns/format'
 import { Category, Discipline, Tag } from '@prisma/client'
@@ -56,7 +54,7 @@ async function deletePost(id: number): Promise<void> {
   Router.push('/')
 }
 
-const Post: React.FC<IDisciplineProps> = (props) => {
+const Post: React.FC<IDisciplineProps> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session, loading] = useSession()
   if (loading) {
     return <div>Authenticating ...</div>
