@@ -42,14 +42,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 }
 
 async function publishPost(id: number): Promise<void> {
-  await fetch(`${process.env.NEXTAUTH_URL}/api/publish/${id}`, {
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/publish/${id}`, {
     method: 'PUT',
   })
   await Router.push('/')
 }
 
 async function deletePost(id: number): Promise<void> {
-  await fetch(`${process.env.NEXTAUTH_URL}/api/post/${id}`, {
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
     method: 'DELETE',
   })
   Router.push('/')

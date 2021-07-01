@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
 
 import { Pagination, IPaginationProps } from './Pagination';
@@ -11,24 +11,25 @@ export type IPostListProps = {
   pagination: IPaginationProps;
 };
 
-const PostList = (props: IPostListProps) => (
-  <>
-    <ul>
-      {props.posts.length > 0 ? props.posts.map((elt) => (
-        <li key={elt.slug} className="mb-3 flex justify-between">
-          <Link href="/post/[id]" as={`/post/${elt.id}`}>
-            <a>
-              <h2>{elt.title}</h2>
-            </a>
-          </Link>
+const PostList = (props: IPostListProps) => {
+  return (
+    <>
+      <ul>
+        {props.posts.length > 0 ? props.posts.map((elt) => (
+          <li key={elt.slug} className="mb-3 flex justify-between">
+            <Link href="/post/[id]" as={`/post/${elt.id}`}>
+              <a>
+                <h2>{elt.title}</h2>
+              </a>
+            </Link>
+            <div>{elt.createdAt.toISOString != undefined ? format(elt.createdAt, 'LLL d, yyyy'):''}</div>
+          </li>
+        )) : null}
+      </ul>
 
-          <div>{format(elt.createdAt, 'LLL d, yyyy')}</div>
-        </li>
-      )) : null}
-    </ul>
-
-    <Pagination previous={props.pagination.previous} next={props.pagination.next} />
-  </>
-);
+      <Pagination previous={props.pagination.previous} next={props.pagination.next} />
+    </>
+  )
+};
 
 export { PostList };

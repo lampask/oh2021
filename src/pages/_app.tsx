@@ -10,7 +10,7 @@ import '../styles/main.css'
 import '../styles/prism-a11y-dark.css'
 import 'react-calendar/dist/Calendar.css'
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }) => {
   const { session } = pageProps
   
   return (
