@@ -12,7 +12,7 @@ type IAdminHeaderProps = {
 const AdminHeader: React.FC<IAdminHeaderProps> = (props) => {
   return (
     <header className="p-4 border-b border-gray-300">
-      <Authbar />
+      <Authbar hideAdmin={true} />
       <div className="pl-5 pt-8 pb-3">
         <Link href={`${process.env.NEXTAUTH_URL}`}>
           <div className="font-semibold text-xl text-gray-900">{Config.title} Admin Dashboard</div>

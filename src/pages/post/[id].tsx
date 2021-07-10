@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
     include: {
       author: {
-        select: { name: true, email: true },
+        select: { id: true, name: true },
       },
     },
   })
@@ -30,8 +30,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       title: post?.title,
       image: post?.image,
       author: {
+        id: post?.author.id,
         name: post?.author.name,
-        email: post?.author.email
       },
       createdAt: post?.createdAt,
       updatedAt: post?.updatedAt,
@@ -55,13 +55,13 @@ async function deletePost(id: number): Promise<void> {
   Router.push('/')
 }
 
-const MainPost: React.FC<(Post & {author: {name: string | null;email: string;};})> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MainPost: React.FC<(Post & {author: {name: string | null;id: number;};})> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session, loading] = useSession()
   if (loading) {
     return <div>Authenticating ...</div>
   }
   const userHasValidSession = Boolean(session)
-  const postBelongsToUser = session?.user?.email === props.author?.email
+  const postBelongsToUser = session?.user?.id === props.author?.id
   let title = props.title
   if (!props.published) {
     title = `${title} (Draft)`
@@ -89,7 +89,7 @@ const MainPost: React.FC<(Post & {author: {name: string | null;email: string;};}
       >
         <div>
           <h2 className="text-center font-bold text-3xl text-gray-900 mt-2">{title}</h2>
-          <div className="text-center text-sm">By {props?.author?.name || 'Unknown author'}</div>
+          <div className="text-center text-sm">By {<a href={`/profile/${props.author?.id}`}>{props?.author?.name}</a> || 'Unknown author'}</div>
           <div className="text-center text-sm mb-8">{format(props.createdAt, 'LLLL d, yyyy')}</div>
           <div className="mx-auto xl:w-4/5">
             <hr />

@@ -1,5 +1,3 @@
-// pages/drafts.tsx
-
 import React from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useSession, getSession } from 'next-auth/client'

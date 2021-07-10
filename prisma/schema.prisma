@@ -57,6 +57,8 @@ model User {
   posts         Post[]
   class         Class?        @relation(fields: [classId], references: [id])
   classId       Int?
+  publicProfile Boolean       @default(true)
+  aboutMe       String?       
   comments      Comment[]     @relation("CommentsAuthored")
   likes         Comment[]     @relation(references: [id])
   accounts      Account[]

@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-import fetchPosts from "../../lib/queries/fetch-posts";
+import fetchPosts from "../../lib/queries/post-queries";
 import queryClient from "../../lib/clients/react-query";
 import { PostList } from '../components/PostList';
 import { Meta } from '../layout/Meta';
@@ -15,10 +15,12 @@ import { CalendarWidget } from '../components/widgets/CalendarWidget';
 import { useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { IPaginationProps } from '../components/Pagination';
+import fetchProfilePicture from '../../lib/queries/user-queries';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const pagination: IPaginationProps = {};
   await queryClient.prefetchQuery("posts", fetchPosts);
+  await queryClient.prefetchQuery("picture", fetchProfilePicture);
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
