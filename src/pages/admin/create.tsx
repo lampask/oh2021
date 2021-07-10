@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/client'
 import AdminHeader from '../../layout/AdminHeader'
 import Footer from '../../layout/Footer'
 import { Content } from '../../layout/Content'
+import Link from 'next/link'
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
@@ -20,6 +21,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     }
   }
+
+  if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
+    return { 
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    }
+  }
+  
   return {
     props: {}
   }
@@ -55,6 +66,7 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
     >
       <AdminHeader />
       <Content>
+        <Link href="/admin">&#60;- Back to dashboard</Link>
         <div>
           <form onSubmit={submitData}>
             <h1>New Draft</h1>
