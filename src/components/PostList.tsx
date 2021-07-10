@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ const PostList = (props: IPostListProps) => {
                 <h2>{elt.title}</h2>
               </a>
             </Link>
-            <div>{elt.createdAt.toISOString != undefined ? format(elt.createdAt, 'LLL d, yyyy'):''}</div>
+            <div>{typeof(elt.createdAt) != typeof("") ? format(elt.createdAt, 'LLL d, yyyy') : format(parseISO(elt.createdAt.toString()), 'LLL d, yyyy') }</div>
           </li>
         )) : null}
       </ul>

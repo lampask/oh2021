@@ -12,6 +12,7 @@ type IAuthbarProps = {
 
 const Authbar: React.FC<IAuthbarProps> = (props) => {
   const [session, loading] = useSession()
+  const { isLoading, isError, data } = useQuery("picture", fetchProfilePicture);
   
   let authbar = null
   if (loading) {
@@ -23,7 +24,6 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
   } else if (session) { 
     let userPart = null;
     if (!props.hide) { 
-      const { isLoading, isError, data } = useQuery("picture", fetchProfilePicture);
       let imgData = ""
       if (!isLoading && !isError) imgData = URL.createObjectURL(new Blob([Buffer.from(data!, 'base64')], {type: 'image/jpeg'}))
       

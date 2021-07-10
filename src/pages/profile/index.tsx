@@ -58,6 +58,8 @@ type ProfileProps = {
 }
 
 export const ProfileComp: React.FC<ProfileProps> = (props) => {
+  console.log(props.user ? props.user.posts : null)
+  
   return (
     props.user ?
     (<Main
