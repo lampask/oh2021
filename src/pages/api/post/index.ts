@@ -20,7 +20,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           author: { connect: { email: session?.user?.email! } },
         },
       })
-      return res.status(200).json(post);
+      return res.status(201).json(post);
     } catch (error) {
       return res.status(422).end();
     }
