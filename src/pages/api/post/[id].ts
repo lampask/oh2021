@@ -11,13 +11,13 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       const post = await prisma.post.findUnique({
         include: {
           author: {
-            select: { name: true },
+            select: { id: true, name: true },
           },
         },
         where: { id: Number(postId) }
       })
       if (post === null) return res.status(404).end();
-      if (post.published === false || session?.user.id != post.authorId) return res.status(401).end();
+      if (post.published === false && session?.user.id != post.authorId) return res.status(401).end();
       return res.status(200).json(post);
     } catch (error) {
       return res.status(422).end();

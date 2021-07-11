@@ -11,7 +11,7 @@ export type IPostListProps = {
   pagination: IPaginationProps;
 };
 
-const PostList = (props: IPostListProps) => {
+const AdminPostList = (props: IPostListProps) => {
   return (
     <>
       <ul>
@@ -32,4 +32,4 @@ const PostList = (props: IPostListProps) => {
   )
 };
 
-export { PostList };
+export { AdminPostList };

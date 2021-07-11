@@ -46,7 +46,8 @@ const options: NextAuthOptions = {
           last_name: profile.family_name,
           first_name: profile.given_name,
           email: profile.email,
-          picture: profile.picture
+          picture: profile.picture,
+          role: ""
         };
       },
       clientId: `${process.env.AZURE_CLIENT_ID}`,
@@ -118,7 +119,8 @@ const options: NextAuthOptions = {
           headers: {
             'Authorization': `Bearer ${account.accessToken}`,
             'Content-Type': 'image/jpg'
-          }
+          },
+          responseType: 'arraybuffer'
         })
         if (userImage.data) {
           await prisma.user.update({ where: { id: user.id }, data: { imageData: Buffer.from(userImage.data) }});
@@ -132,9 +134,10 @@ const options: NextAuthOptions = {
         return session
       }
   
-      session.user.id = (token as User).id;
+      const user = await prisma.user.findUnique({select: { id: true, role: true }, where: { email: token.email! } })
+      session.user.id = user?.id!
+      session.user.role = user?.role!
       session.accessToken = (token as JWT);
-  
       return session;
     },
   },
