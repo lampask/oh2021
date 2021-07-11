@@ -1,4 +1,5 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
+import {useSession} from "next-auth/client";
 import React from "react";
 import prisma from "../../lib/clients/prisma";
 import DisciplineList, { IDisciplinesProps } from "../components/DisciplineList";
@@ -11,9 +12,15 @@ import { Meta } from "../layout/Meta";
 import { Sidebar } from "../layout/Sidebar";
 import { Config } from "../utils/Config";
 
-
-
 const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [session, loading] = useSession()
+
+  let mainContent = (
+    <Content>
+      <DisciplineList disciplines={props} />
+    </Content>
+  )
+
   return (
     <Main
       meta={(
@@ -24,17 +31,14 @@ const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetStaticPropsType
       )}
     >
       <Header /> 
-      <Sidebar
-        content={
-          <div className="flex flex-col">
-            
-          </div>
-        }
-      >
-        <Content>
-          <DisciplineList disciplines={props} />
-        </Content>
-      </Sidebar>
+      {session ? <Sidebar
+          content={
+            <div className="flex flex-col">
+              <h1>{session.user.class}</h1>
+            </div>
+          }
+        >{mainContent}</Sidebar> 
+      : mainContent}
       <Footer />
     </Main>
   )

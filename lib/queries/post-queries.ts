@@ -1,5 +1,4 @@
 import axios from "axios";
-import {markdownToHtml} from "../../src/utils/Markdown";
 
 export const fetchPosts = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post`);
@@ -15,8 +14,7 @@ export const fetchAdminPosts = async () => {
 
 export const fetchPost = async (id: number) => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
-  const data = await res.data;
-  data.content = await markdownToHtml(data.content) 
+  const data = await res.data; 
   return data;
 }
 

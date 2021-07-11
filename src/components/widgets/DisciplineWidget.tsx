@@ -51,14 +51,14 @@ const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ dis
         <span className="block pr-5"><img /></span>
         <div className="flex-grow flex flex-col justify-center pr-5">
           <small>{discipline.category?.name}</small>
-          <h2>{discipline.name}</h2>
+          <h6 className="m-0">{discipline.name}</h6>
           <small className="flex">{discipline.tags.length > 0 ? discipline.tags.map((tag: Tag) => {
             <span className="mr-1" key={tag.id}>{tag.name}</span>
           }) : null}</small>
         </div>
         <div className="flex flex-col justify-center pr-5">
-          <p>P {discipline.posts.length}</p>
-          <p>E {discipline.events.length}</p>
+          <p className="m-0">P {discipline.posts.length}</p>
+          <p className="m-0">E {discipline.events.length}</p>
         </div>
         <div className="flex flex-col justify-center">
           <span>

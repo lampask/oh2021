@@ -10,6 +10,14 @@ import AdminHeader from '../../layout/AdminHeader'
 import Footer from '../../layout/Footer'
 import { Content } from '../../layout/Content'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const SimpleMdeReact = dynamic(() => 
+  import('react-simplemde-editor').then((mod) => mod.SimpleMdeReact), {
+    ssr: false
+  }
+)
+
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
@@ -30,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       },
     }
   }
-  
+
   return {
     props: {}
   }
@@ -55,6 +63,10 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
     }
   }
 
+  const onChange = (value: string) => {
+    setContent(value);
+  };
+
   return (
     <Main
       meta={(
@@ -67,27 +79,20 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
       <AdminHeader />
       <Content>
         <Link href="/admin">&#60;- Back to dashboard</Link>
-        <div>
+        <div className="mt-5">
           <form onSubmit={submitData}>
-            <h1>New Draft</h1>
-            <input
-              autoFocus
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Title"
-              type="text"
-              value={title}
-            />
-            <textarea
-              cols={50}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Content"
-              rows={8}
-              value={content}
-            />
-            <input disabled={!content || !title} type="submit" value="Create" />
-            <a className="back" href="#" onClick={() => Router.push('/')}>
-              or Cancel
-            </a>
+            <h6 className="underline">Create new Post</h6>
+            <div className="inline-block mt-5 mb-5">
+              Title:   
+              <input
+                autoFocus
+                onChange={(e) => setTitle(e.target.value)}
+                type="text"
+                value={title}
+              />
+            </div>
+            <SimpleMdeReact value={content} onChange={onChange} />
+            <input className="p-4 ml-5" disabled={!content || !title} type="submit" value="Create" />
           </form>
         </div>
       </Content>

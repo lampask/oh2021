@@ -14,6 +14,11 @@ import queryClient from '../../../lib/clients/react-query'
 import { dehydrate } from 'react-query/hydration'
 import {useMutation, useQuery} from 'react-query'
 import {parseISO} from 'date-fns'
+import ReactMarkdown from 'react-markdown'
+
+import gfm from 'remark-gfm'
+import emoji from 'remark-emoji'
+const collapse = require('remark-collapse')
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await queryClient.prefetchQuery(["post", Number(params?.id) || -1], () => fetchPost(Number(params?.id) || -1));
@@ -74,10 +79,7 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
           <div className="mx-auto xl:w-4/5">
             <hr />
             <Content styled={true} >
-              <div
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: data?.content }}
-              />
+              <ReactMarkdown remarkPlugins={[gfm, emoji, collapse]} children={data?.content} />
             </Content>
             <hr />
             {

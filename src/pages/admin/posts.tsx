@@ -68,7 +68,7 @@ const Posts: React.FC<IPostListProps> = (props: InferGetServerSidePropsType<type
       <AdminHeader />
       <Content>
         <Link href="/admin">&#60;- Back to dashboard</Link>
-        <h1 className="underline">List of all available posts</h1>
+        <h6 className="underline">List of all available posts</h6>
         { session ? 
           table
         : <div>You need to be authenticated to view this page.</div>}

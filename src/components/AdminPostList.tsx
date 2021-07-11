@@ -19,7 +19,7 @@ const AdminPostList = (props: IPostListProps) => {
           <li key={elt.slug} className="mb-3 flex justify-between">
             <Link href="/post/[id]" as={`/post/${elt.id}`}>
               <a>
-                <h2>{elt.title}</h2>
+                <h4>{elt.title}</h4>
               </a>
             </Link>
             <div>{typeof(elt.createdAt) != typeof("") ? format(elt.createdAt, 'LLL d, yyyy') : format(parseISO(elt.createdAt.toString()), 'LLL d, yyyy') }</div>

@@ -6,12 +6,12 @@ import { AppProps } from 'next/app'
 import { Provider as AuthProvider } from 'next-auth/client'
 import queryClient from "../../lib/clients/react-query";
 
-import '../styles/main.css'
-import '../styles/prism-a11y-dark.css'
+import '../styles/main.scss'
 import 'react-calendar/dist/Calendar.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import "easymde/dist/easymde.min.css"
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }) => {
   const { session } = pageProps
   
   return (

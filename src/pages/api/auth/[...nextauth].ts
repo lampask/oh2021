@@ -47,7 +47,8 @@ const options: NextAuthOptions = {
           first_name: profile.given_name,
           email: profile.email,
           picture: profile.picture,
-          role: ""
+          role: "",
+          class: ""
         };
       },
       clientId: `${process.env.AZURE_CLIENT_ID}`,
@@ -134,9 +135,10 @@ const options: NextAuthOptions = {
         return session
       }
   
-      const user = await prisma.user.findUnique({select: { id: true, role: true }, where: { email: token.email! } })
+      const user = await prisma.user.findUnique({select: { id: true, role: true, class: { select: { name: true } } }, where: { email: token.email! } })
       session.user.id = user?.id!
       session.user.role = user?.role!
+      session.user.class = user?.class?.name!
       session.accessToken = (token as JWT);
       return session;
     },
