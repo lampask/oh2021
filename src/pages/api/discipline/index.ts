@@ -32,7 +32,34 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     }
   } else if (req.method === "GET") {
     try {
-      const disciplines = await prisma.discipline.findMany();
+      const disciplines = await prisma.discipline.findMany({
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          tags: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          events: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          posts: {
+            select: {
+              id: true,
+              title: true
+            }
+          }
+        }
+      });
       return res.status(200).json(disciplines);
     } catch (error) {
       return res.status(422).end();

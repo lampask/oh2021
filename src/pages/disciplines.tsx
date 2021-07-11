@@ -1,25 +1,50 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import {useSession} from "next-auth/client";
 import React from "react";
-import prisma from "../../lib/clients/prisma";
+import {useQuery} from "react-query";
+import {dehydrate} from "react-query/hydration";
+import queryClient from "../../lib/clients/react-query";
+import {fetchDisciplines} from "../../lib/queries/discipline-queries";
+import {fetchProfilePicture} from "../../lib/queries/user-queries";
 import DisciplineList, { IDisciplinesProps } from "../components/DisciplineList";
-import { IPaginationProps } from "../components/Pagination";
 import { Content } from "../layout/Content";
 import Footer from "../layout/Footer";
 import Header from "../layout/Header";
 import { Main } from "../layout/Main";
 import { Meta } from "../layout/Meta";
 import { Sidebar } from "../layout/Sidebar";
-import { Config } from "../utils/Config";
 
-const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  await queryClient.prefetchQuery("disciplines", fetchDisciplines)
+  await queryClient.prefetchQuery("picture", fetchProfilePicture)
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};
+
+const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
   const [session, loading] = useSession()
 
-  let mainContent = (
-    <Content>
-      <DisciplineList disciplines={props} />
-    </Content>
-  )
+  let mainContent = null
+  if (isLoading || loading) {
+    mainContent = <p>Loading...</p> 
+  } else if (isError) {
+    mainContent = <p>Error /// {error}</p>
+  } else {
+    let passData = {
+      disciplines: data?.disciplines,
+      categories: data?.categories,
+      pagination: {}
+    } 
+    mainContent = (
+      <Content>
+        <DisciplineList disciplines={passData} />
+      </Content>
+    )
+  }
 
   return (
     <Main
@@ -42,32 +67,6 @@ const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetStaticPropsType
       <Footer />
     </Main>
   )
-};
-
-export const getStaticProps: GetStaticProps<IDisciplinesProps> = async () => {
-  const pagination: IPaginationProps = {};
-  const disciplines = await prisma.discipline.findMany({
-    include: {
-      category: true,
-      events: true,
-      posts: true,
-      tags: true
-    },
-  })
-
-  const categories = await prisma.category.findMany()
-
-  if (disciplines.length > Config.pagination_size) {
-    pagination.next = '/page2';
-  }
-
-  return {
-    props: {
-      disciplines: disciplines,
-      categories: categories,
-      pagination: pagination
-    },
-  };
 };
 
 export default Disciplines
