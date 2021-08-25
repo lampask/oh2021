@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions, User } from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
 import { NextApiHandler } from 'next'
@@ -6,8 +6,6 @@ import prisma from '../../../../lib/clients/prisma'
 import { Role } from '@prisma/client'
 import axios from 'axios'
 import { JWT } from 'next-auth/jwt'
-import queryClient from '../../../../lib/clients/react-query'
-import {fetchProfilePicture} from '../../../../lib/queries/user-queries'
 
 const AZURE_TENANT_ID = process.env.AZURE_TENANT_ID;
 
@@ -83,14 +81,13 @@ const options: NextAuthOptions = {
               'Content-Type': 'application/json'
             }
           })
-          if (userClassFirst) {
+          if (userClassFirst.data) {
             if (userClassFirst.data.value.length != 0) {
               const target = await prisma.class.findUnique({ where: { objectID: userClassFirst.data.value[0] } })
               await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
             }
           }
           //#endregion
-          
           //#region DRUHY STUPEN
           const userClassSecond = await axios.post('https://graph.microsoft.com/v1.0/me/checkMemberGroups',
           {
@@ -109,7 +106,7 @@ const options: NextAuthOptions = {
               'Content-Type': 'application/json'
             }
           })
-          if (userClassSecond) {
+          if (userClassSecond.data) {
             if (userClassSecond.data.value.length != 0) {
               const target = await prisma.class.findUnique({ where: { objectID: userClassSecond.data.value[0] } })
               await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
@@ -137,7 +134,6 @@ const options: NextAuthOptions = {
       if (!session?.user || !token) {
         return session
       }
-  
       const user = await prisma.user.findUnique({select: { id: true, role: true, class: { select: { name: true } } }, where: { email: token.email! } })
       session.user.id = user?.id!
       session.user.role = user?.role!

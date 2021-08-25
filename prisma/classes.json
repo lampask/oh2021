@@ -82,7 +82,7 @@
       "name": "sexta",
       "objectID": "489b5771-e73c-4be2-9fcc-4f3a556285cb",
       "thirdGrade": true,
-      "organising": true
+      "organising": false
     },
     {
       "name": "II.A",
@@ -100,7 +100,7 @@
       "name": "septima",
       "objectID": "9747a936-defe-4dda-897a-d2a195112fea",
       "thirdGrade": true,
-      "organising": false
+      "organising": true
     },
     {
       "name": "III.A",
