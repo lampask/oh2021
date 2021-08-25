@@ -55,8 +55,14 @@
       "organising": false
     },
     {
-      "name": "kvinta",
-      "objectID": "195b4906-0398-423b-828e-2795d2aeea0f",
+      "name": "kvintaA",
+      "objectID": "0ab6916b-01d5-4021-a416-d5b5a7533502",
+      "thirdGrade": true,
+      "organising": false
+    },
+    {
+      "name": "kvintaB",
+      "objectID": "488ec458-e6c3-4f7a-bff4-cf9fba1bbc81",
       "thirdGrade": true,
       "organising": false
     },
@@ -95,6 +101,12 @@
       "objectID": "7cc58117-8d25-445c-a2e8-08547a1205ee",
       "thirdGrade": true,
       "organising": false
+    },
+    {
+      "name": "III.C",
+      "objectID": "8c5b3381-399b-4b0c-9932-9897af4ca14d",
+      "thirdGrade": true,
+      "organising": true
     },
     {
       "name": "septima",
