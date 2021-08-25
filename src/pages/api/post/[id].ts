@@ -17,7 +17,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         where: { id: Number(postId) }
       })
       if (post === null) return res.status(404).end();
-      if (post.published === false && session?.user.id != post.authorId) return res.status(401).end();
+      if (session?.user.role != 'ADMIN') if (post.published === false && session?.user.id != post.authorId) return res.status(401).end();
       return res.status(200).json(post);
     } catch (error) {
       return res.status(422).end();

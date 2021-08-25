@@ -5,7 +5,6 @@ import {useQuery} from "react-query";
 import {dehydrate} from "react-query/hydration";
 import queryClient from "../../lib/clients/react-query";
 import {fetchDisciplines} from "../../lib/queries/discipline-queries";
-import {fetchProfilePicture} from "../../lib/queries/user-queries";
 import DisciplineList, { IDisciplinesProps } from "../components/DisciplineList";
 import { Content } from "../layout/Content";
 import Footer from "../layout/Footer";
@@ -16,7 +15,6 @@ import { Sidebar } from "../layout/Sidebar";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   await queryClient.prefetchQuery("disciplines", fetchDisciplines)
-  await queryClient.prefetchQuery("picture", fetchProfilePicture)
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
@@ -51,7 +49,7 @@ const Disciplines: React.FC<IDisciplinesProps> = (props: InferGetServerSideProps
       meta={(
         <Meta
           title="Disciplines"
-          description="List of all the disciplines"
+          description="List of all disciplines"
         />
       )}
     >

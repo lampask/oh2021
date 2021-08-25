@@ -56,7 +56,7 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
   }
   return (
     <div className="absolute right-0 z-10">
-      <ul className={`navbar flex flex-wrap text-sm flex-row items-center`}>
+      <ul className={`profile flex flex-wrap text-sm flex-row items-center`}>
         {authbar}
         {loading ? null :
         <li className="ml-3 mr-3">

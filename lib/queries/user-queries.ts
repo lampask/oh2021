@@ -1,5 +1,11 @@
 import axios from "axios";
 
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  return error;
+});
+
 export const fetchProfilePicture = async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/profile/picture`, {responseType: 'arraybuffer'});
   return Buffer.from(res.data, 'binary').toString('base64');

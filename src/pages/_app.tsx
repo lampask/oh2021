@@ -11,7 +11,7 @@ import 'react-calendar/dist/Calendar.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import "easymde/dist/easymde.min.css"
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps } : AppProps) => {
   const { session } = pageProps
   
   return (

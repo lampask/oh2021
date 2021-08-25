@@ -14,12 +14,12 @@ export type IPostListProps = {
 const PostList = (props: IPostListProps) => {
   return (
     <>
-      <ul>
+      <ul className="m-0 p-0">
         {props.posts.length > 0 ? props.posts.map((elt) => (
           <li key={elt.slug} className="flex justify-between items-center">
             <Link href="/post/[id]" as={`/post/${elt.id}`}>
               <a>
-                <h6>{elt.title}</h6>
+                <h6 className="m-2">{elt.title}</h6>
               </a>
             </Link>
             <div>{typeof(elt.createdAt) != typeof("") ? format(elt.createdAt, 'LLL d, yyyy') : format(parseISO(elt.createdAt.toString()), 'LLL d, yyyy') }</div>

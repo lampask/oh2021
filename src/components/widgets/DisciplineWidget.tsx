@@ -46,7 +46,7 @@ const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ dis
   });
 
   return (
-    <Link href="discipline/">
+    <Link href={`/discipline/${discipline.id}`}>
       <div className="flex flex-row align-middle p-1 border-2 border-gray-400 hover:bg-gray-200 cursor-pointer">
         <span className="block pr-5"><img /></span>
         <div className="flex-grow flex flex-col justify-center pr-5">

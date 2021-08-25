@@ -13,6 +13,19 @@ a:hover {
   @apply text-gray-900;
 }
 
+button {
+  border: 1.5px solid black;
+  border-radius: 4px;
+  padding: 1px 2px;
+  margin: 5px 2px;
+}
+
+.profile {
+  img {
+    border-radius: 15%;
+  }
+}
+
 .mark {
   body {
     background-color: #FFF;

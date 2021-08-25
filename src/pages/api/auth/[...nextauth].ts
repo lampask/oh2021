@@ -6,6 +6,8 @@ import prisma from '../../../../lib/clients/prisma'
 import { Role } from '@prisma/client'
 import axios from 'axios'
 import { JWT } from 'next-auth/jwt'
+import queryClient from '../../../../lib/clients/react-query'
+import {fetchProfilePicture} from '../../../../lib/queries/user-queries'
 
 const AZURE_TENANT_ID = process.env.AZURE_TENANT_ID;
 
@@ -126,6 +128,7 @@ const options: NextAuthOptions = {
         if (userImage.data) {
           await prisma.user.update({ where: { id: user.id }, data: { imageData: Buffer.from(userImage.data) }});
         }
+        
       }
       return token
     },

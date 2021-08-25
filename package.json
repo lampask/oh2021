@@ -36,7 +36,6 @@
     "react-markdown": "^6.0.2",
     "react-query": "^3.16.1",
     "react-simplemde-editor": "^5.0.1",
-    "remark-collapse": "^0.1.2",
     "remark-emoji": "^2.2.0",
     "remark-gfm": "^1.0.0",
     "sass": "^1.35.2",

@@ -57,7 +57,7 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      await Router.push('/admin/drafts')
+      await Router.push('/admin/posts')
     } catch (error) {
       console.error(error)
     }

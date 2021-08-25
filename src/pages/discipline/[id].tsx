@@ -1,82 +1,43 @@
 import React from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import Router from 'next/router'
-import { useSession } from 'next-auth/client'
-import prisma from '../../../lib/clients/prisma'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
 import Header from '../../layout/Header'
 import Footer from '../../layout/Footer'
 import { Sidebar } from '../../layout/Sidebar'
 import { Content } from '../../layout/Content'
-import format from 'date-fns/format'
-import { Category, Discipline, Tag } from '@prisma/client'
+import {fetchDiscipline} from '../../../lib/queries/discipline-queries'
+import queryClient from '../../../lib/clients/react-query'
+import { dehydrate } from 'react-query/hydration'
+import {useQuery} from 'react-query'
+
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const discipline = await prisma.discipline.findUnique({
-    where: {
-      id: Number(params?.id) || -1,
-    },
-    include: {
-      category: true,
-      posts: true,
-      events: true,
-      tags: true
-    },
-  })
+  await queryClient.prefetchQuery(["discipline", Number(params?.id) || -1], () => fetchDiscipline(Number(params?.id) || -1));
   return {
     props: {
-      discipline: discipline
+      id: Number(params?.id) || -1,
+      dehydratedState: dehydrate(queryClient)
     }
   }
 }
 
-type IDisciplineProps = {
-  discipline: (Discipline & {
-    category: Category | null;
-    posts: Post[];
-    events: Event[];
-    tags: Tag[];
-  }) | null
-}
+const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLoading, isError, data, error } = useQuery(["post", props.id], () => fetchDiscipline(props.id));
 
-async function publishPost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/publish/${id}`, {
-    method: 'PUT',
-  })
-  await Router.push('/')
-}
-
-async function deletePost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/post/${id}`, {
-    method: 'DELETE',
-  })
-  Router.push('/')
-}
-
-const Post: React.FC<IDisciplineProps> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [session, loading] = useSession()
-  if (loading) {
-    return <div>Authenticating ...</div>
+  if (isLoading) {
+    return <div>Loading ...</div>
   }
-  const userHasValidSession = Boolean(session)
-  const postBelongsToUser = session?.user?.email === props.author?.email
-  let title = props.title
-  if (!props.published) {
-    title = `${title} (Draft)`
+  if (isError) {
+    return <div>Error /// {error}</div>
   }
 
   return (
     <Main 
       meta={(
         <Meta
-          title={title}
-          description="post"
-          post={{
-            image: props.image,
-            date: props.createdAt.toUTCString(),
-            modified_date: props.updatedAt.toUTCString(),
-          }}
+          title={data?.title}
+          description="discipline"
         />
       )}
     >
@@ -86,35 +47,13 @@ const Post: React.FC<IDisciplineProps> = (props: InferGetServerSidePropsType<typ
           "a"
         }
       >
-        <div>
-          <h2 className="text-center font-bold text-3xl text-gray-900 mt-2">{title}</h2>
-          <div className="text-center text-sm">By {props?.author?.name || 'Unknown author'}</div>
-          <div className="text-center text-sm mb-8">{format(props.createdAt, 'LLLL d, yyyy')}</div>
-          <div className="mx-auto xl:w-4/5">
-            <hr />
-            <Content styled={true} >
-              <div
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: props.content }}
-              />
-            </Content>
-            <hr />
-            {
-              !props.published && userHasValidSession && postBelongsToUser && (
-                <button onClick={() => publishPost(props.id)}>Publish</button>
-              )
-            }
-            {
-              userHasValidSession && postBelongsToUser && (
-                <button onClick={() => deletePost(props.id)}>Delete</button>
-              )
-            }
-          </div>
-        </div>
+        <Content>
+
+        </Content>   
       </Sidebar>
       <Footer />
     </Main>
   )
 }
 
-export default Post
+export default MainPost
