@@ -16,17 +16,17 @@ const options: NextAuthOptions = {
     updateAge: 24 * 60 * 60, // 24 hours
   },
   providers: [
-    Providers.Email({
-      server: {
-        host: `${process.env.EMAIL_SERVER_HOST}`,
-        port: Number.parseInt(`${process.env.EMAIL_SERVER_PORT}`),
-        auth: {
-          user: `${process.env.EMAIL_SERVER_USER}`,
-          pass: `${process.env.EMAIL_SERVER_PASSWORD}`
-        }
-      },
-      from: `${process.env.EMAIL_FROM}`
-    }),
+    // Providers.Email({
+    //   server: {
+    //     host: `${process.env.EMAIL_SERVER_HOST}`,
+    //     port: Number.parseInt(`${process.env.EMAIL_SERVER_PORT}`),
+    //     auth: {
+    //       user: `${process.env.EMAIL_SERVER_USER}`,
+    //       pass: `${process.env.EMAIL_SERVER_PASSWORD}`
+    //     }
+    //   },
+    //   from: `${process.env.EMAIL_FROM}`
+    // }),
     {
       id: "gamca",
       name: "GAMČA account",

@@ -1,4 +1,4 @@
-import { signOut, useSession } from 'next-auth/client';
+import { signIn, signOut, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 import { useQuery } from "react-query";
@@ -60,11 +60,9 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
         {authbar}
         {loading ? null :
         <li className="ml-3 mr-3">
-          <Link href={!session ? "/api/auth/signin" : "/api/auth/signout"}>
-            <a href="" onClick={!session ? () => {} : async() => await signOut()}>
-              {!session ? "Login" : "Logout"}
-            </a>
-          </Link>
+          <a href="" onClick={!session ? () => signIn("gamca") : () => signOut()}>
+            {!session ? "Login with gamca account" : "Logout"}
+          </a>
         </li>}
       </ul>
     </div>
