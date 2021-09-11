@@ -1,10 +1,11 @@
 import React from "react";
-import { Content } from "../layout/Content";
-import Footer from "../layout/Footer";
+import Footer from "../layout/AppFooter";
 import { Main } from "../layout/Main";
 import { Meta } from "../layout/Meta";
 import ResultsHeader from "../layout/ResultsHeader";
+import { Layout } from "antd";
 
+const { Content } = Layout
 
 const Results: React.FC = (props) => {
   return (

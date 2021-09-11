@@ -6,14 +6,49 @@ import { Meta } from '../../layout/Meta'
 import Footer from '../../layout/AppFooter'
 import AdminHeader from '../../layout/AdminHeader'
 import queryClient from '../../../lib/clients/react-query'
-import {fetchAdminPosts} from '../../../lib/queries/post-queries'
+import {fetchEvents} from '../../../lib/queries/event-queries'
 import {dehydrate} from 'react-query/hydration'
 import {useQuery} from 'react-query'
-import {AdminPostList} from '../../components/AdminPostList'
 import Link from 'next/link'
-import { Layout } from 'antd'
+import { Layout, Table, Space, Spin } from 'antd'
 
 const { Content } = Layout;
+
+const columns = [
+  {
+    title: 'Názov',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Začiatok',
+    dataIndex: 'startDate',
+    key: 'startDate',
+  },
+  {
+    title: 'Koniec',
+    dataIndex: 'endDate',
+    key: 'endDate',
+  },
+  {
+    title: 'Disciplína',
+    dataIndex: 'discipline',
+    key: 'discipline',
+    render: (text, record) => (
+      <Link href="/discipline/[id]" as={`/discipline/${record.discipline.id}`}>{record.discipline.name}</Link>
+    ),
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (text, record) => (
+      <Space size="middle">
+        <a>Edit</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  }
+]
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
@@ -35,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
 
-  await queryClient.prefetchQuery("adminPosts", fetchAdminPosts);
+  await queryClient.prefetchQuery("events", fetchEvents);
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
@@ -43,24 +78,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { isLoading, isError, data, error } = useQuery("adminPosts", fetchAdminPosts);
+const Events: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLoading, isError, data, error } = useQuery("events", fetchEvents);
   const [session] = useSession()
 
   let table = null
   if (isLoading) {
-    table = <p>Loading...</p>
+    table = <Spin />
   } else if (isError) {
     table = <p>Error /// {error}</p>
   } else {
-    table = <AdminPostList posts={data} pagination={{}}/>
+    table = <Table columns={columns} dataSource={data} />
   }
 
   return (
     <Main
       meta={
         <Meta
-          title="Posts management"
+          title="Event management"
           description=""
         />
       }
@@ -68,7 +103,7 @@ const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
       <AdminHeader />
       <Content>
         <Link href="/admin">&#60;- Back to dashboard</Link>
-        <h6 className="underline">List of all available posts</h6>
+        <h6 className="underline">List of all available events</h6>
         { session ? 
           table
         : <div>You need to be authenticated to view this page.</div>}
@@ -78,4 +113,4 @@ const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
   )
 }
 
-export default Posts
+export default Events

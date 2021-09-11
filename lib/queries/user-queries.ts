@@ -16,6 +16,11 @@ export const fetchProfile = async () => {
   return res.data;
 }
 
+export const fetchProfilePosts = async () => {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {responseType: 'json'});
+  return res.data.posts;
+}
+
 export const fetchProfileById = async (id: Number) => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/profile/${id}`, {responseType: 'json'});
   return res.data;

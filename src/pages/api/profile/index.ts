@@ -12,7 +12,31 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     email: true,
     imageData: true,
     name: true,
-    posts: true,
+    posts: {
+      include: {
+        author: {
+          select: { name: true },
+        },
+        categories: {
+          select: {
+            name: true,
+            icon: true
+          }
+        },
+        disciplines: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
+        tags: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      },
+    },
     role: true,
     createdAt: true,
     publicProfile: true,

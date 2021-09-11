@@ -1,5 +1,5 @@
 export const Base = {
-  oh_name: '???',
+  oh_name: 'Hypnóza',
   oh_start: new Date(2021, 9, 10, 12, 0, 0, 0)
 }
 

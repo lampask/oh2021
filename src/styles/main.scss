@@ -1,29 +1,79 @@
-@tailwind base;
-
-a:hover {
-  @apply underline;
+.full {
+  width: 100wv;
+  position: relative;
+  min-height: 100vh;
 }
 
-.navbar :global(a) {
-  @apply text-gray-700;
+.mainContent {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2.5rem;
 }
 
-.navbar :global(a:hover) {
-  @apply no-underline;
-  @apply text-gray-900;
+.limit {
+  max-width: 100vw;
 }
 
-button {
-  border: 1.5px solid black;
-  border-radius: 4px;
-  padding: 1px 2px;
-  margin: 5px 2px;
+.menuContainer {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  height: 67px;
+}
+.sider {
+  flex: initial !important;
+  max-width: initial !important;
+  max-height: initial !important;
+  width: auto !important;
+  padding: .5rem;
+}
+
+.header {
+  background: #fff !important;
+  height: auto !important;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4rem;
+}
+
+.content {
+  background: #fff !important;
+}
+
+.titleArea {
+  display: inline-flex;
+  place-items: flex-end;
+  .logo img {
+    width: 260px;
+    margin: -40px;
+    user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+  font-size: 2em;
 }
 
 .profile {
-  img {
+  .img {
     border-radius: 15%;
   }
+}
+
+.post {
+  padding: 0px 20px;
+}
+
+.postList {
+  min-height: 350px;
+  padding: 1rem !important;
 }
 
 .mark {
@@ -107,6 +157,27 @@ button {
   }
 }
 
-@tailwind components;
-
-@tailwind utilities;
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.events .ant-badge-status {
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.notes-month {
+  font-size: 28px;
+  text-align: center;
+}
+.notes-month section {
+  font-size: 28px;
+}
+.site-calendar-widget {
+  width: 300px;
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+}

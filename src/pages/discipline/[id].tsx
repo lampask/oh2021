@@ -2,15 +2,15 @@ import React from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
-import Header from '../../layout/Header'
-import Footer from '../../layout/Footer'
-import { Sidebar } from '../../layout/Sidebar'
-import { Content } from '../../layout/Content'
+import Header from '../../layout/AppHeader'
+import Footer from '../../layout/AppFooter'
 import {fetchDiscipline} from '../../../lib/queries/discipline-queries'
 import queryClient from '../../../lib/clients/react-query'
 import { dehydrate } from 'react-query/hydration'
 import {useQuery} from 'react-query'
+import { Layout, Spin } from 'antd'
 
+const { Content, Sider } = Layout;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await queryClient.prefetchQuery(["discipline", Number(params?.id) || -1], () => fetchDiscipline(Number(params?.id) || -1));
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 }
 
 const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { isLoading, isError, data, error } = useQuery(["post", props.id], () => fetchDiscipline(props.id));
+  const { isLoading, isError, data, error } = useQuery(["discipline", props.id], () => fetchDiscipline(props.id));
 
   if (isLoading) {
     return <div>Loading ...</div>
@@ -36,21 +36,16 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
     <Main 
       meta={(
         <Meta
-          title={data?.title}
+          title={data?.name}
           description="discipline"
         />
       )}
     >
       <Header />
-      <Sidebar
-        content={
-          "a"
-        }
-      >
-        <Content>
-
-        </Content>   
-      </Sidebar>
+      <Content>
+        <p>{JSON.stringify(data)}</p>
+      </Content>   
+      <Sider className="sider" collapsedWidth="0" theme="light">a</Sider>
       <Footer />
     </Main>
   )

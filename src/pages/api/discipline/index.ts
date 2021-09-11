@@ -13,7 +13,7 @@ import prisma from '../../../../lib/clients/prisma'
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { name, categoryId, icon } = req.body
+      const { name, icon, description, category, tags } = req.body
 
       const session = await getSession({ req })
       if (!session) return res.status(401).end();
@@ -21,8 +21,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         data: {
           name: name,
           slug: name.replace(/ /g, '-').toLowerCase(),
-          category: { connect: { id: categoryId } },
+          description: description,
+          category: { connect: { id: parseInt(category) } },
           icon: icon,
+          tags: {
+            connect: tags?.map((id: string) => {return { id: parseInt(id) }}),
+          },
         },
       })
       return res.status(201).json(discipline);

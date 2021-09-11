@@ -19,6 +19,11 @@ module.exports = withBundleAnalyzer({
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
   env: {
     baseUrl: baseUrl,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -26,8 +31,5 @@ module.exports = withBundleAnalyzer({
     AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     JWT_SECRET: process.env.JWT_SECRET,
-  },
-  future: {
-    webpack5: true,
-  },
+  }
 });

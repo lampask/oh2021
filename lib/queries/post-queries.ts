@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const fetchPosts = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post`);
   const data = await res.json();
@@ -15,7 +13,6 @@ export const fetchAdminPosts = async () => {
 export const fetchPost = async (id: number) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`);
   const data = await res.json();
-  console.log(data)
   return data;
 }
 

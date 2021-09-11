@@ -1,42 +1,52 @@
-import React from "react";
-import { Category, Discipline, Post, Tag } from "@prisma/client";
-import { IPaginationProps, Pagination } from "./Pagination";
-import DisciplineWidget from "./widgets/DisciplineWidget";
+import React, {useState} from "react";
+import { Discipline } from "@prisma/client";
 import DisciplineFilter from "./DisciplineFilter";
+import { List, Avatar, Skeleton,  } from 'antd';
+import Link from "next/link";
+import { useQuery } from "react-query";
+import {fetchDisciplines} from "../../lib/queries/discipline-queries";
+import DisciplineWidget from "./widgets/DisciplineWidget";
 
+const DisciplineList: React.FC = () => { 
+  const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
+  const [discData, setData] = useState(data?.disciplines)
 
-export type IDisciplinesProps = {
-  disciplines: (Discipline & {
-      category: Category | null
-      events: Event[]
-      posts: Post[]
-      tags: Tag[]
-    })[];
-  categories: Category[]
-  pagination: IPaginationProps
-}
+  const setDataFunc = (d: Discipline[]) => {
+    setData(d)
+  } 
 
-const DisciplineList: React.FC<{ disciplines: IDisciplinesProps  }> = ({ disciplines }) => { 
   return (
-    <div className="flex flex-col">
-      <DisciplineFilter categories={disciplines.categories}/>
-      <div className="w-4/5 xl:w-2/3 m-auto">
-        <hr className="mb-3"/>
-        {disciplines.disciplines.map((discipline) => {
-          return <DisciplineWidget key={discipline.id} discipline={{
-            id: discipline.id,
-            name: discipline.name,
-            category: discipline.category,
-            events: discipline.events,
-            posts: discipline.posts,
-            tags: discipline.tags,
-            deadline: undefined
-          }}/>
-        })}
-      </div>
-      <Pagination previous={disciplines.pagination.previous} next={disciplines.pagination.next} />
-    </div>
-  )
+    <div>
+      <DisciplineFilter func={setDataFunc} disciplines={data?.disciplines} categories={data?.categories}/>
+      <List
+          className="postList"
+          loading={isLoading}
+          itemLayout="horizontal"
+          dataSource={discData}
+          renderItem={(item: Discipline & any) => {
+            let actions = [
+              <p className="m-0">Články {item.posts.length}</p>,
+              <p className="m-0">Udalosti {item.events.length}</p>,
+              <span><DisciplineWidget discipline={item} /></span>
+            ]
+            return (
+              <List.Item
+                actions={actions}
+              >
+                <Skeleton avatar title={false} loading={isLoading} active>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    }
+                    title={<Link href="/discipline/[id]" as={`/discipline/${item.id}`}>{item.name}</Link>}
+                    description={<small>{item.category?.name}</small>}
+                  />
+                </Skeleton>
+              </List.Item>
+            )
+          }}
+        />
+      </div>)
 }
 
 export default DisciplineList;

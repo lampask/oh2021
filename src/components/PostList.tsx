@@ -1,34 +1,50 @@
 import React from 'react';
-
-import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
+import { useQuery } from "react-query";
+import { Discipline, Post } from '@prisma/client';
+import { List, Avatar, Tag, Skeleton,  } from 'antd';
+import { TagsOutlined } from '@ant-design/icons';
 
-import { Pagination, IPaginationProps } from './Pagination';
-import { Post } from '@prisma/client';
 
-export type IPostListProps = {
-  posts: Post[];
-  pagination: IPaginationProps;
-};
-
-const PostList = (props: IPostListProps) => {
+const PostList: React.FC<{ query: any, qkey: string }> = (props) => {
+  const { isLoading, isError, data, error } = useQuery(props.qkey, props.query);
+  
   return (
-    <>
-      <ul className="m-0 p-0">
-        {props.posts.length > 0 ? props.posts.map((elt) => (
-          <li key={elt.slug} className="flex justify-between items-center">
-            <Link href="/post/[id]" as={`/post/${elt.id}`}>
-              <a>
-                <h6 className="m-2">{elt.title}</h6>
-              </a>
-            </Link>
-            <div>{typeof(elt.createdAt) != typeof("") ? format(elt.createdAt, 'LLL d, yyyy') : format(parseISO(elt.createdAt.toString()), 'LLL d, yyyy') }</div>
-          </li>
-        )) : null}
-      </ul>
+    <List
+        className="postList"
+        loading={isLoading}
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item: Post & any) => {
+          let actions = []
+          if (item.disciplines.length > 0) {
+            actions.push(<span key="disciplines">{item.disciplines.map((disc: Discipline) => (
+              <Tag key={disc.id}>{disc.name}</Tag> 
+            ))}</span>)
+          }
+          if (item.tags.length > 0) {
+            actions.push(<span key="tags"><TagsOutlined />{item.tags.map((tag: any) => (
+              <Tag key={tag.id}>{tag.name}</Tag> 
+            ))}</span>)
+          }
 
-      <Pagination previous={props.pagination.previous} next={props.pagination.next} />
-    </>
+          return (
+            <List.Item
+              actions={actions}
+            >
+              <Skeleton avatar title={false} loading={isLoading} active>
+                <List.Item.Meta
+                  avatar={
+                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                  }
+                  title={<Link href="/post/[id]" as={`/post/${item.id}`}>{item.title}</Link>}
+                  description={item.description}
+                />
+              </Skeleton>
+            </List.Item>
+          )
+        }}
+      />
   )
 };
 

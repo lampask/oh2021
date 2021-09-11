@@ -3,10 +3,8 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useSession } from 'next-auth/client'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
-import Header from '../../layout/Header'
-import Footer from '../../layout/Footer'
-import { Sidebar } from '../../layout/Sidebar'
-import { Content } from '../../layout/Content'
+import Header from '../../layout/AppHeader'
+import Footer from '../../layout/AppFooter'
 import format from 'date-fns/format'
 import {deletePost, fetchPost, publishPost} from '../../../lib/queries/post-queries'
 import queryClient from '../../../lib/clients/react-query'
@@ -16,6 +14,11 @@ import {parseISO} from 'date-fns'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 import emoji from 'remark-emoji'
+import { Button, Layout, PageHeader, Spin } from 'antd'
+import { useRouter } from 'next/router'
+import skLocale from 'date-fns/locale/sk';
+
+const { Content, Sider } = Layout;
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await queryClient.prefetchQuery(["post", Number(params?.id) || -1], () => fetchPost(Number(params?.id) || -1));
@@ -29,12 +32,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session, loading] = useSession()
+  const router = useRouter()
   const { isLoading, isError, data, error } = useQuery(["post", props.id], () => fetchPost(props.id));
   const publishP = useMutation(id => publishPost(Number(id)))
   const deleteP = useMutation(id => deletePost(Number(id)))
 
   if (loading || isLoading) {
-    return <div>Loading ...</div>
+    return <Spin />
   }
   if (isError) {
     return <div>Error /// {error}</div>
@@ -48,6 +52,8 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
     title = `${title} (Draft)`
   }
   let date = data?.createdAt
+
+  console.log(data)
 
   return (
     <Main 
@@ -63,37 +69,46 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
         />
       )}
     >
-      <Header />
-      <Sidebar
-        content={
-          "a"
-        }
-      >
-        <div>
-          <h2 className="text-center font-bold text-3xl text-gray-900 mt-2">{title}</h2>
-          <div className="text-center text-sm">By {<a href={`/profile/${data?.author?.id}`}>{data?.author?.name}</a> || 'Unknown author'}</div>
-          <div className="text-center text-sm mb-8">{format(parseISO(date), 'LLLL d, yyyy')}</div>
-          <div className="mx-auto xl:w-4/5">
-            <hr />
-            <Content styled={true} >
-              <ReactMarkdown remarkPlugins={[gfm, emoji]} children={data?.content}  />
-            </Content>
-            <hr />
-            {
-              !data?.published && ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                <button onClick={() => publishP.mutate(props.id)}>Publish</button>
-              )
-            }
-            <br />
-            {
-              ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                <button onClick={() => deleteP.mutate(props.id)}>Delete</button>
-              )
-            }
-          </div>
-        </div>
-      </Sidebar>
-      <Footer />
+      <Layout>
+        <Header />
+        <Layout>
+          <Content className="content">
+            <PageHeader
+              className="site-page-header"
+              onBack={() => router.back()}
+              title={title}
+              subTitle={<>By {<a href={`/profile/${data?.author?.id}`}>{data?.author?.name}</a> || 'Unknown author'}</>}
+            />
+            <div className="post">
+              <div>{format(parseISO(date), 'd LLLL, yyyy', { locale: skLocale })}</div>
+              <hr />
+              <ReactMarkdown remarkPlugins={[gfm, emoji]} children={data?.content} />
+              <hr />
+              <>
+              {
+                !data?.published && ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
+                  <Button onClick={() => publishP.mutate(props.id)}>Publish</Button>
+                )
+              }
+              { "  " }
+              {
+                ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
+                  <Button onClick={() => deleteP.mutate(props.id)}>Edit</Button>
+                )
+              }
+              { "  " }
+              {
+                ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
+                  <Button onClick={() => deleteP.mutate(props.id)}>Delete</Button>
+                )
+              }
+              </>
+            </div>
+          </Content>
+          <Sider className="sider" collapsedWidth="0" theme="light">sijfdjdaoa</Sider>
+        </Layout>
+        <Footer />
+      </Layout>
     </Main>
   )
 }

@@ -1,8 +1,8 @@
 import { signIn, signOut, useSession } from 'next-auth/client';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import { useQuery } from "react-query";
-import { fetchProfilePicture } from '../../lib/queries/user-queries';
+import { Menu, Spin, Avatar } from 'antd';
+import PPicture from './PPicture';
 
 type IAuthbarProps = {
   children?: ReactNode
@@ -12,59 +12,45 @@ type IAuthbarProps = {
 
 const Authbar: React.FC<IAuthbarProps> = (props) => {
   const [session, loading] = useSession()
-  const { isLoading, isError, data } = useQuery("picture", fetchProfilePicture);
-  
   let authbar = null
+
   if (loading) {
     authbar = (
-      <li className="ml-3 mr-3">
-          <a>Loading...</a>
-      </li>
+      <Spin/>
     )
   } else if (session) { 
-    let userPart = null;
-    if (!props.hide) { 
-      let imgData = ""
-      if (!isLoading && !isError) imgData = URL.createObjectURL(new Blob([Buffer.from(data!, 'base64')], {type: 'image/jpeg'}))
-      
-      userPart = (
-        <>
-        {!isLoading && !isError ? <li>
-            <img className="w-7" src={imgData!} onLoad={() => URL.revokeObjectURL(imgData)}/> 
-        </li> : null}
-        <li className="ml-3 mr-3">
-          <small>
-            <Link href="/profile">{session.user?.name || "Guest"}</Link> ({session.user?.email})
-          </small>
-        </li>
-        </>
-      )
-    }
-    authbar = (
-      <>
-        { (session?.user.role == 'EDITOR' || session?.user.role == 'ADMIN') && !props.hideAdmin ? (
-          <li className="ml-3 mr-3">
-            <button>
-              <Link href="/admin">ADMIN DASHBOARD</Link>
-            </button>
-          </li>
-        ) : null}
-        {userPart}
-        {props.children}
-      </>
-    )
+    authbar = (<>
+      { (session?.user.role == 'EDITOR' || session?.user.role == 'ADMIN') && !props.hideAdmin ? (
+        <Menu.Item key={"admin"}>
+          <Link href="/admin">ADMIN DASHBOARD</Link>
+        </Menu.Item>
+      ) : null}
+      {!props.hide ? <>
+        <Menu.Item key={"profile"}>
+        <Avatar
+          shape="square"
+          size={25}
+          src={<PPicture />}
+        />
+        <span> </span>
+        <Link href="/profile"><span>{session.user?.name || "Guest"} ({session.user?.email})</span></Link> 
+        </Menu.Item>
+      </> : null}
+    </>)
   }
   return (
-    <div className="absolute right-0 z-10">
-      <ul className={`profile flex flex-wrap text-sm flex-row items-center`}>
+    <div className="menuContainer">
+      <Menu mode="horizontal">
         {authbar}
         {loading ? null :
-        <li className="ml-3 mr-3">
-          <a href="" onClick={!session ? () => signIn("gamca") : () => signOut()}>
-            {!session ? "Login with gamca account" : "Logout"}
-          </a>
-        </li>}
-      </ul>
+        <Menu.Item key={"session"}>
+          <Link href={!session ? '/api/auth/signin' : '/api/auth/signout'}>
+            <a href="" onClick={!session ? null : () => signOut()}>
+              {!session ? "Login with gamca account" : "Logout"}
+            </a>
+          </Link>
+        </Menu.Item>}
+      </Menu>
     </div>
   )
 };

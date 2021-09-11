@@ -1,18 +1,21 @@
 import React from 'react';
 import { Config } from '../utils/Config';
+import { Layout } from 'antd';
 
-const Footer: React.FC = () => {
+const { Footer } = Layout;
+
+const AppFooter: React.FC = () => {
   return (
-    <footer>
-      <div className="border-t border-gray-300 text-center py-8 text-sm">
+    <Footer className="footer">
+      <div >
         © Copyright
         {' '}
         {new Date().getFullYear()}
         {' '}
         {Config.title}
       </div>
-    </footer>
+    </Footer>
   )
 }  
 
-export default Footer
+export default AppFooter

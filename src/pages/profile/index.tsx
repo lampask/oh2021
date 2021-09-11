@@ -1,9 +1,8 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getSession } from "next-auth/client";
 import React from "react";
-import {fetchProfile} from "../../../lib/queries/user-queries";
-import { Content } from "../../layout/Content";
-import Footer from "../../layout/Footer";
+import { fetchProfile, fetchProfilePosts} from "../../../lib/queries/user-queries";
+import Footer from "../../layout/AppFooter";
 import { Main } from "../../layout/Main";
 import { Meta } from "../../layout/Meta";
 import dynamic from 'next/dynamic'
@@ -12,6 +11,9 @@ import { dehydrate } from "react-query/hydration";
 import queryClient from "../../../lib/clients/react-query";
 import {PostList} from "../../components/PostList";
 import {Class,Post,Role} from "@prisma/client";
+import { Layout } from "antd";
+
+const { Content } = Layout;
 
 const ProfileHeader = dynamic(() => import("../../layout/ProfileHeader"), {
   ssr: false
@@ -72,7 +74,7 @@ export const ProfileComp: React.FC<ProfileProps> = (props) => {
       <Content>
         <div className="mt-10">
         Posts authored by this user:
-        <PostList posts={props.user.posts} pagination={{}} />
+        <PostList qkey="profPosts" query={fetchProfilePosts} />
         </div>
       </Content>
       <Footer />

@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
+import { Menu } from 'antd';
 
 type INavbarProps = {
   children?: ReactNode;
+  active?: string
 };
 
 const Navbar: React.FC<INavbarProps> = (props) => {
@@ -11,24 +13,24 @@ const Navbar: React.FC<INavbarProps> = (props) => {
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname
   return (
-    <ul className="navbar flex flex-wrap text-xl flex-row">
-       <li className="mr-6">
-            <Link href="/">
-              <a className="text-bold" data-active={isActive('/')}>Home</a>
-            </Link>
-          </li>
-          <li className="mr-6">
-            <Link href="/disciplines">
-              <a className="text-bold" data-active={isActive('/')}>Disciplines</a>
-            </Link>
-          </li>
-          <li className="mr-6">
-            <Link href="/results">
-              <a className="text-bold" data-active={isActive('/')}>Results</a>
-            </Link>
-          </li>
-          {props.children}
-    </ul>
+    <Menu mode="horizontal" defaultSelectedKeys={[props.active!]}>  
+      <Menu.Item key={"home"}>
+        <Link href="/">
+          <a className="text-bold" data-active={isActive('/')}>Home</a>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key={"disciplines"}>
+        <Link href="/disciplines">
+          <a className="text-bold" data-active={isActive('/')}>Disciplines</a>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key={"results"}>
+        <Link href="/results">
+          <a className="text-bold" data-active={isActive('/')}>Results</a>
+        </Link>
+      </Menu.Item>
+      {props.children}
+    </Menu>
   )
 };
 

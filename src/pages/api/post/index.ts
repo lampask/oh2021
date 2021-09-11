@@ -8,20 +8,29 @@ import prisma from '../../../../lib/clients/prisma'
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { title, content } = req.body
-
+      const { title, discipline, categories, tags, content } = req.body
       const session = await getSession({ req })
       if (!session) return res.status(401).end();
       const post = await prisma.post.create({
         data: {
           title: title,
+          disciplines: {
+            connect: discipline ? { id: parseInt(discipline!) } : undefined,
+          },
           slug: title.replace(/ /g, '-').toLowerCase(),
           content: content,
+          categories: {
+            connect: categories?.map((id: string) => {return { id: parseInt(id) }}),
+          },
+          tags: {
+            connect: tags?.map((id: string) => {return { id: parseInt(id) }}),
+          },
           author: { connect: { email: session?.user?.email! } },
         },
       })
       return res.status(201).json(post);
     } catch (error) {
+      console.log(error)
       return res.status(422).end();
     }
   } else if (req.method === "GET") {
@@ -31,6 +40,24 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           author: {
             select: { name: true },
           },
+          categories: {
+            select: {
+              name: true,
+              icon: true
+            }
+          },
+          disciplines: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          tags: {
+            select: {
+              id: true,
+              name: true,
+            }
+          }
         },
         where: { published: true },
         orderBy: [

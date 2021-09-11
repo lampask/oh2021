@@ -127,6 +127,7 @@ model Discipline {
   name          String
   slug          String
   icon          String?
+  description   String?
   category      Category?     @relation(fields: [categoryId], references: [id])
   categoryId    Int?
   tags          Tag[]         @relation(references: [id])
@@ -159,6 +160,7 @@ model Class {
   organising    Boolean       @default(false)
   users         User[]
   results       EventResult[]
+  codes         Code[]
 }
 
 model Event {
@@ -166,9 +168,20 @@ model Event {
   name          String
   startDate     DateTime
   endDate       DateTime
+  color         String?
   results       EventResult[]
   parentId      Int
   discipline    Discipline    @relation(fields: [parentId], references: [id])
+}
+
+model Code {
+  id            String          @id
+  number        Int             @default(autoincrement())
+  classes       Class[]
+  qr            Bytes
+  active        Boolean
+  latitude      Float?
+  longitude     Float?
 }
 
 enum Role {

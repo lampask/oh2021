@@ -1,31 +1,22 @@
 import React from "react";
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
-import format from 'date-fns/format'
-import parse from 'date-fns/parse'
-import startOfWeek from 'date-fns/startOfWeek'
-import getDay from 'date-fns/getDay'
 import {Meta} from "../layout/Meta";
-import Header from "../layout/Header";
-import {Content} from "../layout/Content";
-import Footer from "../layout/Footer";
+import Header from "../layout/AppHeader";
+import Footer from "../layout/AppFooter";
 import {Main} from "../layout/Main";
 import {GetServerSideProps, InferGetServerSidePropsType } from "next";
 import queryClient from "../../lib/clients/react-query";
 import {dehydrate} from "react-query/hydration";
+import { Layout, Calendar, Badge } from "antd";
+import {Event} from ".prisma/client";
+import {useQuery} from 'react-query';
+import {fetchEvents} from "../../lib/queries/event-queries";
+import {parseISO} from "date-fns";
 
-const locales = {
-  'sk': require('date-fns/locale/sk'),
-}
+const { Content } = Layout
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-})
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  await queryClient.prefetchQuery("events", fetchEvents);
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
@@ -34,7 +25,45 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  let eventList: any[] = []
+  const { isLoading, isError, data, error } = useQuery("events", fetchEvents);
+  
+  function dateCellRender(value: moment.Moment) {
+    let d = value.toDate();
+    d.setHours(0,0,1,1);
+    return (
+      <ul className="events">
+        {data?.map((event: Event) =>{
+          let s = parseISO(event.startDate.toString())
+          let e = parseISO(event.endDate.toString())
+          s.setHours(0,0,1,1);
+          e.setHours(0,0,1,1);
+          if (s <= d && d <= e) {
+          return (
+            <li key={event.id}>
+               <Badge color={event.color!} status="default" text={event.name} />
+            </li>
+          )
+        }})}
+      </ul>
+    );
+  }
+  
+  function getMonthData(value: moment.Moment) {
+    if (value.month() === 8) {
+      return 1394;
+    }
+  }
+  
+  function monthCellRender(value: moment.Moment) {
+    const num = getMonthData(value);
+    return num ? (
+      <div className="notes-month">
+        <section>{num}</section>
+        <span>Backlog number</span>
+      </div>
+    ) : null;
+  }
+
   return (
     <Main meta={(
       <Meta 
@@ -44,15 +73,7 @@ const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServ
     )}>
       <Header /> 
         <Content>
-          <Calendar
-            localizer={localizer}
-            events={eventList}
-            defaultDate={new Date()}
-            defaultView="month"
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500 }}
-          />
+         <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />
         </Content>
       <Footer />
     </Main>

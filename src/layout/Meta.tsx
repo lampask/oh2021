@@ -27,24 +27,24 @@ const Meta = (props: IMetaProps) => {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link
           rel="apple-touch-icon"
-          href={`${process.env.baseUrl}/apple-touch-icon.png`}
+          href={`${process.env.baseUrl}/favicon32.png`}
           key="apple"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href={`${process.env.baseUrl}/favicon-32x32.png`}
+          href={`${process.env.baseUrl}/favicon32.png`}
           key="icon32"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href={`${process.env.baseUrl}/favicon-16x16.png`}
+          href={`${process.env.baseUrl}/favicon16.png`}
           key="icon16"
         />
-        <link rel="icon" href={`${process.env.baseUrl}/favicon.ico`} key="favicon" />
+        <link rel="icon" type="image/x-icon" href={`${process.env.baseUrl}/favicon.ico?v=1`} key="favicon" />
         <title>{`${props.title} | ${Config.site_name}`}</title>
         <meta
           name="description"

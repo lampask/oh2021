@@ -1,22 +1,29 @@
-import { Category } from "@prisma/client"
+import { Category, Discipline } from "@prisma/client"
+import {ChangeEvent} from "react"
+import { Input } from 'antd';
 //import { useState } from "react"
 
 type IDisciplineFilterProps = {
-  categories: Category[]
+  disciplines: Discipline[],
+  categories: Category[],
+  func: Function
 }
 
 const DisciplineFilter: React.FC<IDisciplineFilterProps> = (props: IDisciplineFilterProps) => { 
-  //const [query, setQuery] = useState("");
-  
+
+  const handleInput = (input: ChangeEvent & any) => {
+    props.func(props.disciplines.filter(key => { return key.name.toLowerCase().includes(input.target.value.toLowerCase()) }))
+  }
+
   return (
     <div className="filterNav flex flex-col align-middle">
-      <div className="categoryFilter flex flex-row justify-center">
+      {/* `<div className="categoryFilter flex flex-row justify-center">
         {props.categories.length > 0 ? props.categories.map(category => {
           return <button key={category.id}>{category.name}</button>
         }) : null}
-      </div>
+      </div>` */}
       <div className="queryFilter">
-        <input></input>
+        <Input onChange={handleInput}></Input>
       </div>
     </div>
   )

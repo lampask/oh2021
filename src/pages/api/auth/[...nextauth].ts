@@ -1,6 +1,5 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import Adapters from 'next-auth/adapters'
-import Providers from 'next-auth/providers'
 import { NextApiHandler } from 'next'
 import prisma from '../../../../lib/clients/prisma'
 import { Role } from '@prisma/client'
@@ -124,8 +123,7 @@ const options: NextAuthOptions = {
         })
         if (userImage.data) {
           await prisma.user.update({ where: { id: user.id }, data: { imageData: Buffer.from(userImage.data) }});
-        }
-        
+        } 
       }
       return token
     },

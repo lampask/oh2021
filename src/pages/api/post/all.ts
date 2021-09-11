@@ -28,6 +28,24 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           author: {
             select: { name: true },
           },
+          categories: {
+            select: {
+              name: true,
+              icon: true
+            }
+          },
+          disciplines: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          tags: {
+            select: {
+              id: true,
+              name: true,
+            }
+          }
         },
         where: filter,
         orderBy: [
