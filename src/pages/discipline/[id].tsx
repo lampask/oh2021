@@ -9,6 +9,7 @@ import queryClient from '../../../lib/clients/react-query'
 import { dehydrate } from 'react-query/hydration'
 import {useQuery} from 'react-query'
 import { Layout, Spin } from 'antd'
+import {PostList} from '../../components/PostList'
 
 const { Content, Sider } = Layout;
 
@@ -41,12 +42,16 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
         />
       )}
     >
-      <Header />
-      <Content>
-        <p>{JSON.stringify(data)}</p>
-      </Content>   
-      <Sider className="sider" collapsedWidth="0" theme="light">a</Sider>
-      <Footer />
+      <Layout>
+        <Header />
+        <Layout>
+          <Content className="content">
+            <PostList data={data?.posts} />
+          </Content>   
+          <Sider className="sider" collapsedWidth="0" theme="light">Trieda - {}</Sider>
+        </Layout>
+        <Footer />
+      </Layout>
     </Main>
   )
 }

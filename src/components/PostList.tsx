@@ -6,15 +6,23 @@ import { List, Avatar, Tag, Skeleton,  } from 'antd';
 import { TagsOutlined } from '@ant-design/icons';
 
 
-const PostList: React.FC<{ query: any, qkey: string }> = (props) => {
-  const { isLoading, isError, data, error } = useQuery(props.qkey, props.query);
-  
+const PostList: React.FC<{ data?: any, query?: any, qkey?: string }> = (props) => {
+  var loading = false;
+  var pdata;
+  if (props.data == undefined) {
+    const { isLoading, isError, data, error } = useQuery(props.qkey!, props.query);
+    loading = isLoading
+    pdata = data
+  } else {
+    pdata = props.data
+  }
+
   return (
     <List
         className="postList"
-        loading={isLoading}
+        loading={loading}
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={pdata}
         renderItem={(item: Post & any) => {
           let actions = []
           if (item.disciplines.length > 0) {
@@ -32,7 +40,7 @@ const PostList: React.FC<{ query: any, qkey: string }> = (props) => {
             <List.Item
               actions={actions}
             >
-              <Skeleton avatar title={false} loading={isLoading} active>
+              <Skeleton avatar title={false} loading={loading} active>
                 <List.Item.Meta
                   avatar={
                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />

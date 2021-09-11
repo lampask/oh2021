@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 }
 //props: InferGetServerSidePropsType<typeof getServerSideProps>
-const EventDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const DisciplineDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
   const [sub, setSub] = useState(<span>Create</span>)
   const [content, setContent] = useState('')
@@ -164,4 +164,4 @@ const EventDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServe
   )
 }
 
-export default EventDraft
+export default DisciplineDraft

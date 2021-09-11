@@ -22,6 +22,16 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
       const discipline = await prisma.discipline.findFirst({
         where: { id: Number(disciplineId) },
+        include: {
+          posts: {
+            include: {
+              disciplines: true,
+              categories: true,
+              tags: true,
+            }
+          },
+          events: true
+        }
       });
       return res.status(200).json(discipline);
     } catch (error) {
