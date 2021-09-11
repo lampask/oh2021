@@ -1,5 +1,5 @@
 import React from "react";
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { Badge } from "antd";
 
 export type EventProps = {

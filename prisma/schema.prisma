@@ -170,8 +170,8 @@ model Event {
   endDate       DateTime
   color         String?
   results       EventResult[]
-  parentId      Int
-  discipline    Discipline    @relation(fields: [parentId], references: [id])
+  parentId      Int?
+  discipline    Discipline?    @relation(fields: [parentId], references: [id])
 }
 
 model Code {

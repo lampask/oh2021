@@ -13,29 +13,22 @@ import prisma from '../../../../lib/clients/prisma'
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { id, title, dateRange, color, discipline } = req.body
+      const { title, dateRange, color, discipline } = req.body
 
       const session = await getSession({ req })
       if (!session) return res.status(401).end();
-      const event = await prisma.event.upsert({
-        where: {
-          id: id
-        },
-        update: {
+      const event = await prisma.event.create({
+        data: {
           name: title,
           startDate: dateRange[0],
           endDate: dateRange[1],
-          discipline: { connect: { id: parseInt(discipline) } },
-        },
-        create: {
-          name: title,
-          startDate: dateRange[0],
-          endDate: dateRange[1],
-          discipline: { connect: { id: parseInt(discipline) } },
+          color: color,
+          discipline: discipline ? { connect: { id: parseInt(discipline) } } : undefined,
         },
       })
       return res.status(201).json(event);
     } catch (error) {
+      console.error(error)
       return res.status(422).end();
     }
   } else if (req.method === "GET") {

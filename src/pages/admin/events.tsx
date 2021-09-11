@@ -35,7 +35,7 @@ const columns = [
     dataIndex: 'discipline',
     key: 'discipline',
     render: (text, record) => (
-      <Link href="/discipline/[id]" as={`/discipline/${record.discipline.id}`}>{record.discipline.name}</Link>
+      <Link href="/discipline/[id]" as={`/discipline/${record.discipline?.id}`}><span>{record.discipline?.name}</span></Link>
     ),
   },
   {
