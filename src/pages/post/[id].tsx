@@ -53,8 +53,6 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
   }
   let date = data?.createdAt
 
-  console.log(data)
-
   return (
     <Main 
       meta={(

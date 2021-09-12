@@ -13,42 +13,40 @@ import prisma from '../../../../lib/clients/prisma'
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { title, dateRange, color, discipline } = req.body
+      const { points, place, description, clas, event } = req.body
 
       const session = await getSession({ req })
       if (!session) return res.status(401).end();
-      const event = await prisma.event.create({
+      const result = await prisma.eventResult.create({
         data: {
-          name: title,
-          startDate: dateRange[0],
-          endDate: dateRange[1],
-          color: color,
-          discipline: discipline ? { connect: { id: parseInt(discipline) } } : undefined,
-        },
+          points: parseInt(points),
+          place: parseInt(place),
+          description: description,
+          class: { connect: { id: parseInt(clas) } },
+          event: { connect: { id: parseInt(event) } },
+        }
       })
-      return res.status(201).json(event);
+      return res.status(201).json(result);
     } catch (error) {
       console.error(error)
       return res.status(422).end();
     }
   } else if (req.method === "GET") {
     try {
-      const events = await prisma.event.findMany({
+      const events = await prisma.eventResult.findMany({
         include: {
-          discipline: {
+          event: {
             select: {
               id: true,
-              name: true,
+              name: true
             }
-          },
-          results: {
-            orderBy: [{
-              points: "desc"
-            }]
-          },
-        }
+          }
+        },
+        orderBy: [{
+          points: "desc"
+        }]
       });
-      events.forEach(eve => eve.results.forEach(res => res.points = -1 ))
+      events.forEach(eve => { eve.points = -1 })
       return res.status(200).json(events);
     } catch (error) {
       return res.status(422).end();

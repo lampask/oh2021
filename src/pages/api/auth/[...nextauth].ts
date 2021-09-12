@@ -15,17 +15,6 @@ const options: NextAuthOptions = {
     updateAge: 24 * 60 * 60, // 24 hours
   },
   providers: [
-    // Providers.Email({
-    //   server: {
-    //     host: `${process.env.EMAIL_SERVER_HOST}`,
-    //     port: Number.parseInt(`${process.env.EMAIL_SERVER_PORT}`),
-    //     auth: {
-    //       user: `${process.env.EMAIL_SERVER_USER}`,
-    //       pass: `${process.env.EMAIL_SERVER_PASSWORD}`
-    //     }
-    //   },
-    //   from: `${process.env.EMAIL_FROM}`
-    // }),
     {
       id: "gamca",
       name: "GAMČA account",
@@ -60,70 +49,79 @@ const options: NextAuthOptions = {
       // Add access_token to the token right after signin
       if (account?.accessToken) 
       {
-        token.accessToken = account.accessToken
+        token.accessToken = account?.accessToken
         if (isNewUser || user.classId === null) {
           // #region PRVY STUPEN
-          const userClassFirst = await axios.post('https://graph.microsoft.com/v1.0/me/checkMemberGroups',
-          {
-            "groupIds": (await prisma.class.findMany({
-              where: {
-                thirdGrade: false
-              },
-              select: {
-                objectID: true
+          try {
+            const userClassFirst = await axios.post('https://graph.microsoft.com/v1.0/me/checkMemberGroups',
+            {
+              "groupIds": (await prisma.class.findMany({
+                where: {
+                  thirdGrade: false
+                },
+                select: {
+                  objectID: true
+                }
+              })).map((item) => item.objectID)
+            },
+            {
+              headers: {
+                'Authorization': `Bearer ${account.accessToken}`,
+                'Content-Type': 'application/json'
               }
-            })).map((item) => item.objectID)
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${account.accessToken}`,
-              'Content-Type': 'application/json'
-            }
-          })
-          if (userClassFirst.data) {
-            if (userClassFirst.data.value.length != 0) {
-              const target = await prisma.class.findUnique({ where: { objectID: userClassFirst.data.value[0] } })
-              await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
-            }
-          }
-          //#endregion
-          //#region DRUHY STUPEN
-          const userClassSecond = await axios.post('https://graph.microsoft.com/v1.0/me/checkMemberGroups',
-          {
-            "groupIds": (await prisma.class.findMany({
-              where: {
-                thirdGrade: true
-              },
-              select: {
-                objectID: true
+            })
+            if (userClassFirst.data) {
+              if (userClassFirst.data.value.length != 0) {
+                const target = await prisma.class.findUnique({ where: { objectID: userClassFirst.data.value[0] } })
+                await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
               }
-            })).map((item) => item.objectID)
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${account.accessToken}`,
-              'Content-Type': 'application/json'
             }
-          })
-          if (userClassSecond.data) {
-            if (userClassSecond.data.value.length != 0) {
-              const target = await prisma.class.findUnique({ where: { objectID: userClassSecond.data.value[0] } })
-              await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
+          
+            //#endregion
+            //#region DRUHY STUPEN
+            const userClassSecond = await axios.post('https://graph.microsoft.com/v1.0/me/checkMemberGroups',
+            {
+              "groupIds": (await prisma.class.findMany({
+                where: {
+                  thirdGrade: true
+                },
+                select: {
+                  objectID: true
+                }
+              })).map((item) => item.objectID)
+            },
+            {
+              headers: {
+                'Authorization': `Bearer ${account.accessToken}`,
+                'Content-Type': 'application/json'
+              }
+            })
+            if (userClassSecond.data) {
+              if (userClassSecond.data.value.length != 0) {
+                const target = await prisma.class.findUnique({ where: { objectID: userClassSecond.data.value[0] } })
+                await prisma.user.update({ where: { id: user.id }, data: { classId: target?.id!, role: (target?.organising ? Role.EDITOR : Role.STUDENT) } })
+              }
             }
+            //#endregion
+          } catch (error) {
+            console.error(error)
           }
-          //#endregion
         }
-        const userImage = await axios.get((profile?.picture as string),
-        {
-          headers: {
-            'Authorization': `Bearer ${account.accessToken}`,
-            'Content-Type': 'image/jpg'
-          },
-          responseType: 'arraybuffer'
-        })
-        if (userImage.data) {
-          await prisma.user.update({ where: { id: user.id }, data: { imageData: Buffer.from(userImage.data) }});
-        } 
+        try {
+          const userImage = await axios.get((profile?.picture as string),
+          {
+            headers: {
+              'Authorization': `Bearer ${account.accessToken}`,
+              'Content-Type': 'image/jpg'
+            },
+            responseType: 'arraybuffer'
+          })
+          if (userImage.data) {
+            await prisma.user.update({ where: { id: user.id }, data: { imageData: Buffer.from(userImage.data) }});
+          }
+        } catch (error) {
+          console.error(error)
+        }
       }
       return token
     },

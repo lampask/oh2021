@@ -34,8 +34,39 @@
   height: auto !important;
 }
 
+.eList {
+  display: grid;
+}
+
+.events {
+  display: flex;
+  justify-content: center;
+  li {
+    line-height: 0.4rem !important;
+  }
+}
+
+.bigEvents {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.calEvent {
+  line-height: 0.3rem !important;
+  width: initial !important;
+  .ant-badge-status-text {
+    margin-left: 3px !important;
+  }
+}
+
 .event {
+  margin-left: 1rem;
   display: inline-flex;
+  place-items: center;
+  h4, h6 { 
+    margin-bottom: .2rem;
+  }
 }
 
 .footer {

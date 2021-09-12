@@ -18,7 +18,6 @@ const CalendarWidget: React.FC<ICalendarProps> = () => {
   const changeHandler = (date: moment.Moment) => {
     let d = date.toDate();
     d.setHours(0,0,1,1);
-    console.log(d)
     setList(data.filter((event: Event) => { 
       let s = parseISO(event.startDate.toString())
       let e = parseISO(event.endDate.toString())
@@ -38,11 +37,10 @@ const CalendarWidget: React.FC<ICalendarProps> = () => {
           let e = parseISO(event.endDate.toString())
           s.setHours(0,0,1,1);
           e.setHours(0,0,1,1);
-          console.log(event.color)
           if (s <= d && d <= e) {
           return (
             <li key={event.id}>
-              <Badge color={event.color!} status="default" />
+              <Badge className="calEvent" color={event.color!} status="default" />
             </li>
           )
         }})}
@@ -56,13 +54,15 @@ const CalendarWidget: React.FC<ICalendarProps> = () => {
       <div className="site-calendar-widget">
         <Calendar fullscreen={false} dateCellRender={dateCellRender} onChange={changeHandler} />
       </div>
-      <div>
+      <div className="eList">
         <br />
        {isLoading ? <Spin /> :
          list.map((e: Event) => {
+          console.log(e)
           return <Ev key={e.id} event={{
             id: e.id,
             name: e.name,
+            color: e.color,
             startDate: parseISO(e.startDate.toString()),
             endDate: parseISO(e.endDate.toString())
           }} />

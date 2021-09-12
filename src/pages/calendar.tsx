@@ -31,7 +31,7 @@ const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServ
     let d = value.toDate();
     d.setHours(0,0,1,1);
     return (
-      <ul className="events">
+      <ul className="bigEvents">
         {data?.map((event: Event) =>{
           let s = parseISO(event.startDate.toString())
           let e = parseISO(event.endDate.toString())

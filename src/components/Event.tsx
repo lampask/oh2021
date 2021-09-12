@@ -11,12 +11,11 @@ export type EventProps = {
 };
 
 const Event: React.FC<{ event: EventProps }> = ({ event }) => {
-  console.log(event.startDate)
   return (
     <div className="event">
-      <Badge color={event.color} status="default" ></Badge>
-      <h4>{event.name}</h4>
-      <h6>{`(${format(event.startDate, 'HH:mm LLL d')} - ${format(event.endDate, 'HH:mm LLL d')})`}</h6>
+      <Badge className="calEvent" color={event.color} status="default" ></Badge>
+      <h4>{event.name}{" -  "}</h4>
+      <h6>{` (${format(event.startDate, 'HH:mm LLL d')} - ${format(event.endDate, 'HH:mm LLL d')})`}</h6>
     </div>
   );
 };

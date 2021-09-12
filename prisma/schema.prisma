@@ -138,7 +138,8 @@ model Discipline {
 model EventResult {
   id            Int           @default(autoincrement()) @id
   points        Int
-  description   String
+  place         Int
+  description   String?
   classId       Int
   class         Class         @relation(fields: [classId], references: [id])
   parentId      Int

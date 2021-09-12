@@ -33,22 +33,24 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
         />
       )}
     >
-      <Header />
-      <Layout className="limit">
-        {session ? <>
-          <Content className="content">
-            <DisciplineList/>
-          </Content>
-          <Sider className="sider" collapsedWidth="0" theme="light"> 
-            <div className="flex flex-col">
-              <h1>{session.user.class}</h1>
-            </div>
-          </Sider></>
-        :  <Content className="content">
-        <DisciplineList/>
-      </Content>}
+      <Layout>
+        <Header />
+        <Layout className="limit">
+          {session ? <>
+            <Content className="content">
+              <DisciplineList/>
+            </Content>
+            <Sider className="sider" collapsedWidth="0" theme="light"> 
+              <div className="flex flex-col">
+                <h1>{session.user.class}</h1>
+              </div>
+            </Sider></>
+          :  <Content className="content">
+          <DisciplineList/>
+        </Content>}
+        </Layout>
+        <Footer />
       </Layout>
-      <Footer />
     </Main>
   )
 };

@@ -51,8 +51,12 @@ const Dashboard: React.FC = (props: InferGetServerSidePropsType<typeof getServer
       <AdminHeader />
       <Content>
         <ul>
+          <li><Link href="/admin/create/result">Create new result</Link></li>
+          <li><Link href="/admin/create/discipline">Create new discipline</Link></li>
+          <li><Link href="/admin/create/event">Create new event</Link></li>
           <li><Link href="/admin/create">Create new post</Link></li>
           <li><Link href="/admin/posts">Manage posts</Link></li>
+          <li><Link href="/admin/events">Manage events</Link></li>
           <li><Link href="/admin/q">QR Codes</Link></li>
         </ul>
       </Content>
