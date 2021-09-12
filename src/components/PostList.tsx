@@ -2,9 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useQuery } from "react-query";
 import { Discipline, Post } from '@prisma/client';
-import { List, Avatar, Tag, Skeleton,  } from 'antd';
+import { List, Avatar, Tag, Skeleton, Pagination } from 'antd';
 import { TagsOutlined } from '@ant-design/icons';
-
 
 const PostList: React.FC<{ data?: any, query?: any, qkey?: string }> = (props) => {
   var loading = false;
@@ -23,6 +22,7 @@ const PostList: React.FC<{ data?: any, query?: any, qkey?: string }> = (props) =
         loading={loading}
         itemLayout="horizontal"
         dataSource={pdata}
+        pagination={{ position: 'bottom', pageSize: 10 }}
         renderItem={(item: Post & any) => {
           let actions = []
           if (item.disciplines.length > 0) {
@@ -35,7 +35,6 @@ const PostList: React.FC<{ data?: any, query?: any, qkey?: string }> = (props) =
               <Tag key={tag.id}>{tag.name}</Tag> 
             ))}</span>)
           }
-
           return (
             <List.Item
               actions={actions}
@@ -43,7 +42,7 @@ const PostList: React.FC<{ data?: any, query?: any, qkey?: string }> = (props) =
               <Skeleton avatar title={false} loading={loading} active>
                 <List.Item.Meta
                   avatar={
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    <Avatar><i className={`oma oma-2x ${item.categories[0]?.icon ? item.categories[0]?.icon : "oma-black-red-question-mark"}`} /></Avatar>
                   }
                   title={<Link href="/post/[id]" as={`/post/${item.id}`}>{item.title}</Link>}
                   description={item.description}

@@ -42,7 +42,7 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
             </Content>
             <Sider className="sider" collapsedWidth="0" theme="light"> 
               <div className="flex flex-col">
-                <h1>{session.user.class}</h1>
+                <h1>Trieda - {session.user.class}</h1>
               </div>
             </Sider></>
           :  <Content className="content">

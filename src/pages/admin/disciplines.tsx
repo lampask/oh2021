@@ -34,14 +34,14 @@ const columns = [
     title: 'Disciplína',
     dataIndex: 'discipline',
     key: 'discipline',
-    render: (text, record) => (
+    render: (record: any) => (
       <Link href="/discipline/[id]" as={`/discipline/${record.discipline.id}`}>{record.discipline.name}</Link>
     ),
   },
   {
     title: 'Action',
     key: 'action',
-    render: (text, record) => (
+    render: () => (
       <Space size="middle">
         <a>Edit</a>
         <a>Delete</a>

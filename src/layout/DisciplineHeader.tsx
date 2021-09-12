@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Image } from 'antd';
+import { Layout, Image, Menu } from 'antd';
 import { Config } from '../utils/Config'
 import { Navbar } from '../components/Navbar'
 import { Authbar } from '../components/Authbar'
@@ -7,7 +7,7 @@ import Link from 'next/link'
 import {Discipline} from '.prisma/client';
 
 type IHeaderProps = {
-  discipline: Discipline
+  discipline: Discipline & any
   type?: string
   description?: boolean
   active?: string
@@ -28,9 +28,19 @@ const DisciplineHeader: React.FC<IHeaderProps> = (props) => {
           </div>
       </Link>
       <div className="discArea">
-        <div className="smalllogo"><Image src={`${process.env.baseUrl}/xyz.a`} /></div>
+        <div className="smalllogo"><i className={`oma oma-5x ${props.discipline.icon ? props.discipline.icon : (props.discipline.category?.icon ? props.discipline.category?.icon : "oma-black-red-question-mark")}`} /></div>
         <h2>{props.discipline.name}</h2>
-        <Navbar active={props.active!}/>
+        <div className="navbar">
+          <Navbar active={props.active!}/>
+        </div>
+        <Menu mode="horizontal">
+          <Menu.Item key="info">
+            Informácie
+          </Menu.Item>
+          <Menu.Item key="results">
+            Výsledky
+          </Menu.Item>
+        </Menu>
       </div>
       
     </Header>

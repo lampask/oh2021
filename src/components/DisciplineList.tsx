@@ -36,7 +36,7 @@ const DisciplineList: React.FC = () => {
                 <Skeleton avatar title={false} loading={isLoading} active>
                   <List.Item.Meta
                     avatar={
-                      <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                      <Avatar><i className={`oma oma-2x ${item.category?.icon ? item.category?.icon : "oma-black-red-question-mark"}`} /></Avatar>
                     }
                     title={<Link href="/discipline/[id]" as={`/discipline/${item.id}`}>{item.name}</Link>}
                     description={<small>{item.category?.name}</small>}

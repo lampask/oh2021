@@ -28,9 +28,28 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
               disciplines: true,
               categories: true,
               tags: true,
+            },
+            where: { published: true },
+          },
+          category: {
+            select: {
+              icon: true
             }
           },
-          events: true
+          events: {
+            include: {
+              results: {
+                select: {
+                  class: {
+                    select: {
+                      name: true
+                    }
+                  },
+                  place: true,
+                }
+              }
+            }
+          }
         }
       });
       return res.status(200).json(discipline);

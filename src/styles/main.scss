@@ -60,6 +60,10 @@
   }
 }
 
+.queryFilter {
+  margin: 1rem;
+}
+
 .event {
   margin-left: 1rem;
   display: inline-flex;
@@ -67,6 +71,33 @@
   h4, h6 { 
     margin-bottom: .2rem;
   }
+}
+
+.smalltitleArea {
+  margin-top: -3.5rem;
+  h1 {
+    display: inline-block;
+  }
+}
+
+.smalllogo {
+  display: inline-block;
+  width: 5rem;
+}
+
+.discArea {
+  h2 {
+    display: inline-block;
+  }
+  .navbar {
+    display: inline-block;
+    border-bottom: none;
+  }
+}
+
+.discDesc {
+  overflow-wrap: break-word;
+  padding: 1rem;
 }
 
 .footer {
@@ -100,6 +131,10 @@
   .img {
     border-radius: 15%;
   }
+}
+
+.content {
+  padding-bottom: 2rem;
 }
 
 .post {

@@ -3,6 +3,8 @@ import {ChangeEvent} from "react"
 import { Input } from 'antd';
 //import { useState } from "react"
 
+const { Search } = Input;
+
 type IDisciplineFilterProps = {
   disciplines: Discipline[],
   categories: Category[],
@@ -23,7 +25,7 @@ const DisciplineFilter: React.FC<IDisciplineFilterProps> = (props: IDisciplineFi
         }) : null}
       </div>` */}
       <div className="queryFilter">
-        <Input onChange={handleInput}></Input>
+        <Search onChange={handleInput} />
       </div>
     </div>
   )

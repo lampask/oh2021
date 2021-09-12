@@ -8,6 +8,7 @@ import queryClient from "../../lib/clients/react-query";
 
 import '../styles/main.scss'
 import 'antd/dist/antd.css';
+import '../styles/openmoji-black-awesome.css'
 import "easymde/dist/easymde.min.css"
 import {ConfigProvider} from 'antd';
 import skSK from 'antd/lib/locale/sk_SK';
@@ -16,7 +17,7 @@ import 'moment/locale/sk';
 locale('sk');
 
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }) => {
   const { session } = pageProps
   
   return (

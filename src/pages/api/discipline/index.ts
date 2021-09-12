@@ -41,7 +41,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           category: {
             select: {
               id: true,
-              name: true
+              name: true,
+              icon: true
             }
           },
           tags: {
@@ -53,19 +54,31 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           events: {
             select: {
               id: true,
-              name: true
+              name: true,
+              results: {
+                select: {
+                  class: {
+                    select: {
+                      name: true
+                    }
+                  },
+                  place: true,
+                }
+              }
             }
           },
           posts: {
             select: {
               id: true,
               title: true
-            }
-          }
+            },
+            where: { published: true },
+          },
         }
       });
       return res.status(200).json(disciplines);
     } catch (error) {
+      console.error(error)
       return res.status(422).end();
     }
   } else {
