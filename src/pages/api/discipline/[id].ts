@@ -48,7 +48,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                   place: true,
                 }
               }
-            }
+            },
+            orderBy: [{
+              startDate: 'asc'
+            }]
           }
         }
       });

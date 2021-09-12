@@ -15,6 +15,8 @@ import gfm from 'remark-gfm'
 import emoji from 'remark-emoji'
 import {useSession} from "next-auth/client";
 import {Event, EventResult} from '.prisma/client'
+import DeadlineEvent from '../../components/DeadlineEvent '
+import {parseISO} from 'date-fns'
 
 const { Content, Sider } = Layout;
 
@@ -38,9 +40,7 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
   if (isError) {
     return <div>Error /// {error}</div>
   }
-
-  console.log(data)
-
+  
   return (
     <Main 
       meta={(
@@ -65,17 +65,21 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
             {session ? <div className="discResults">
               <h1>Trieda - {session?.user?.class}</h1>
               {data?.events.map((e: Event & any) => {
-                return e.results.map((er: EventResult) => {
+                return e.results.map((er: EventResult & any) => {
                   if (er.class.name === session?.user?.class) {
                     return <h5>{e.name} - {er.place}. miesto</h5>
                   }
+                  return null;
                 })
               })}
             </div> : null}
             <h1>Udalosti v budúcnosti</h1>
-            {/* {data?.events.map((e: Event & any) => (
-                <></>
-            ))} */}
+            {data?.events.map((e: Event & any) => {
+              if (parseISO(e.endDate).getTime() > Date.now()) {
+                return <DeadlineEvent event={e} />
+              }
+              return null; 
+            })}
           </Sider>
         </Layout>
         <Footer />

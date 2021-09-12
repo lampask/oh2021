@@ -30,7 +30,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       })
       return res.status(201).json(post);
     } catch (error) {
-      console.log(error)
+      console.error(error)
       return res.status(422).end();
     }
   } else if (req.method === "GET") {

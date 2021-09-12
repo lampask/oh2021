@@ -31,7 +31,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       })
       return res.status(201).json(discipline);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(422).end();
     }
   } else if (req.method === "GET") {
@@ -65,7 +65,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                   place: true,
                 }
               }
-            }
+            },
+            orderBy: [{
+              startDate: 'asc'
+            }]
           },
           posts: {
             select: {

@@ -58,7 +58,6 @@ const CalendarWidget: React.FC<ICalendarProps> = () => {
         <br />
        {isLoading ? <Spin /> :
          list.map((e: Event) => {
-          console.log(e)
           return <Ev key={e.id} event={{
             id: e.id,
             name: e.name,
