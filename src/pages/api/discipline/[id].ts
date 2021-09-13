@@ -62,7 +62,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   } else if (req.method === "DELETE") {
     try {
       const disciplineId = req.query.id
-
+      const session = await getSession({ req })
+      if (!session) return res.status(401).end();
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR') return res.status(401).end();
       const discipline = await prisma.discipline.delete({
         where: { id: Number(disciplineId) },
       });

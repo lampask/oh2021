@@ -17,6 +17,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
       const session = await getSession({ req })
       if (!session) return res.status(401).end();
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR') return res.status(401).end();
       const discipline = await prisma.discipline.create({
         data: {
           name: name,

@@ -11,6 +11,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       const { title, discipline, categories, tags, content } = req.body
       const session = await getSession({ req })
       if (!session) return res.status(401).end();
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR') return res.status(401).end();
       const post = await prisma.post.create({
         data: {
           title: title,
