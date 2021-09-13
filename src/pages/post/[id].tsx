@@ -46,7 +46,7 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
 
   const userHasValidSession = Boolean(session)
   const postBelongsToUser = session?.user?.id === data?.author?.id
-  
+
   let title = data?.title
   if (!data?.published) {
     title = `${title} (Draft)`
@@ -54,11 +54,11 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
   let date = data?.createdAt
 
   return (
-    <Main 
+    <Main
       meta={(
         <Meta
           title={title}
-          description="post"
+          description="Príspevok"
           post={{
             image: data?.image,
             date: parseISO(data?.createdAt).toUTCString(),
@@ -75,7 +75,7 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               className="site-page-header"
               onBack={() => router.back()}
               title={title}
-              subTitle={<>By {<a href={`/profile/${data?.author?.id}`}>{data?.author?.name}</a> || 'Unknown author'}</>}
+              subTitle={<>Autor: {<a href={`/profile/${data?.author?.id}`}>{data?.author?.name}</a> || 'Neznámy autor'}</>}
             />
             <div className="post">
               <div>{format(parseISO(date), 'd LLLL, yyyy', { locale: skLocale })}</div>
@@ -85,25 +85,25 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               <>
               {
                 !data?.published && ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                  <Button onClick={() => publishP.mutate(props.id)}>Publish</Button>
+                  <Button onClick={() => publishP.mutate(props.id)}>Zverejniť</Button>
                 )
               }
               { "  " }
               {
                 ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                  <Button onClick={() => deleteP.mutate(props.id)}>Edit</Button>
+                  <Button onClick={() => deleteP.mutate(props.id)}>Editovať</Button>
                 )
               }
               { "  " }
               {
                 ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                  <Button onClick={() => deleteP.mutate(props.id)}>Delete</Button>
+                  <Button onClick={() => deleteP.mutate(props.id)}>Vymazať</Button>
                 )
               }
               </>
             </div>
           </Content>
-          <Sider className="sider" collapsedWidth="0" theme="light">sijfdjdaoa</Sider>
+          <Sider className="sider" collapsedWidth="0" theme="light">bočná vec</Sider>
         </Layout>
         <Footer />
       </Layout>

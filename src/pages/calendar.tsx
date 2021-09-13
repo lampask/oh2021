@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLoading, isError, data, error } = useQuery("events", fetchEvents);
-  
+
   function dateCellRender(value: moment.Moment) {
     let d = value.toDate();
     d.setHours(0,0,1,1);
@@ -47,13 +47,13 @@ const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServ
       </ul>
     );
   }
-  
+
   function getMonthData(value: moment.Moment) {
     if (value.month() === 8) {
       return 1394;
     }
   }
-  
+
   function monthCellRender(value: moment.Moment) {
     const num = getMonthData(value);
     return num ? (
@@ -66,12 +66,12 @@ const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServ
 
   return (
     <Main meta={(
-      <Meta 
-        title="Calendar"
-        description=""
+      <Meta
+        title="Kalendár"
+        description="Kalendár udalostí"
       />
     )}>
-      <Header /> 
+      <Header />
         <Content>
          <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />
         </Content>

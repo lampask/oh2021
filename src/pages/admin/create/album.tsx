@@ -18,7 +18,7 @@ const { Option } = Select;
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
   if (!session?.user) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 }
 //props: InferGetServerSidePropsType<typeof getServerSideProps>
 const AlbumDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [sub, setSub] = useState(<span>Create</span>)
+  const [sub, setSub] = useState(<span>Vytvoriť</span>)
 
   const submitData = async(values: any) => {
     setSub(<Spin />)
@@ -66,22 +66,22 @@ const AlbumDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServe
     <Main
       meta={(
         <Meta
-          title="New event"
-          description="New event creation page"
+          title="Nový album"
+          description="Stránka na vytváranie nového albumu"
         />
-      )} 
+      )}
     >
       <AdminHeader />
       <Content>
-        <Link href="/admin">&#60;- Back to dashboard</Link>
+        <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <Form
           name="validate_other"
           {...formItemLayout}
           onFinish={submitData}
           initialValues={{}}
         >
-          <Form.Item label="Creating new">
-            <span className="ant-form-text">Album</span>
+          <Form.Item label="Vytváranie nového">
+            <span className="ant-form-text">Albumu</span>
           </Form.Item>
           <Form.Item
             {...formItemLayout}

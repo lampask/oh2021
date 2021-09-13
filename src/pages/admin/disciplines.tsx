@@ -39,12 +39,12 @@ const columns = [
     ),
   },
   {
-    title: 'Action',
+    title: 'Akcia',
     key: 'action',
     render: () => (
       <Space size="middle">
-        <a>Edit</a>
-        <a>Delete</a>
+        <a>Editovať</a>
+        <a>Vymazať</a>
       </Space>
     ),
   }
@@ -53,7 +53,7 @@ const columns = [
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
   if (!session?.user || !session?.user?.email) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -95,18 +95,18 @@ const ADisciplines: React.FC = (props: InferGetServerSidePropsType<typeof getSer
     <Main
       meta={
         <Meta
-          title="Event management"
+          title="Spravovanie disciplín"
           description=""
         />
       }
     >
       <AdminHeader />
       <Content>
-        <Link href="/admin">&#60;- Back to dashboard</Link>
-        <h6 className="underline">List of all available events</h6>
-        { session ? 
+        <Link href="/admin">&#60;- Naspäť na dashboard</Link>
+        <h6 className="underline">List všetkých disciplín</h6>
+        { session ?
           table
-        : <div>You need to be authenticated to view this page.</div>}
+        : <div>Musíš byť overený aby si videl túto stránku.</div>}
       </Content>
       <Footer />
     </Main>

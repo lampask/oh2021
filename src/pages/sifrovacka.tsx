@@ -8,7 +8,7 @@ const sifrovacka: React.FC = (props) => {
     <Main
       meta={(
         <Meta
-          title="Sifrovacka"
+          title="Sifrovačka"
           description="OH Sifra time"
         />
       )}

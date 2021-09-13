@@ -18,7 +18,7 @@ const { Content } = Layout;
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
   if (!session?.user || !session?.user?.email) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -60,18 +60,18 @@ const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
     <Main
       meta={
         <Meta
-          title="Posts management"
+          title="Spravovanie príspevkov"
           description=""
         />
       }
     >
       <AdminHeader />
       <Content>
-        <Link href="/admin">&#60;- Back to dashboard</Link>
-        <h6 className="underline">List of all available posts</h6>
-        { session ? 
+        <Link href="/admin">&#60;- Naspäť na dashboard</Link>
+        <h6 className="underline">List všetkých príspevkov</h6>
+        { session ?
           table
-        : <div>You need to be authenticated to view this page.</div>}
+        : <div>Musíš byť overený aby si videl túto stránku.</div>}
       </Content>
       <Footer />
     </Main>

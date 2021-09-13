@@ -36,7 +36,7 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
     const classed: Event[] = res?.filter((er: EventResult & any) => er.class?.name === session?.user.class);
     classed?.forEach((x: any) => x.place < 4 ? d[x.place-1]++ : null)
   }
-  
+
 
   const data = {
     labels: ['🥇', '🥈', '🥉'],
@@ -58,7 +58,7 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
       },
     ],
   };
-  
+
   const options = {
     scales: {
       yAxes: [
@@ -70,14 +70,14 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
       ],
     },
   };
-  
+
 
   return (
     <Main
       meta={(
         <Meta
-          title="Disciplines"
-          description="List of all disciplines"
+          title="Disciplíny"
+          description="List všetkých disciplín"
         />
       )}
     >
@@ -88,7 +88,7 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
             <Content className="content">
               <DisciplineList/>
             </Content>
-            <Sider className="sider" collapsedWidth="0" theme="light"> 
+            <Sider className="sider" collapsedWidth="0" theme="light">
               <div className="discChart">
                 <h1>Trieda - {session.user.class}</h1>
                 <Bar width={300} data={data} options={options} />

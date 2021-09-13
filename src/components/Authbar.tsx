@@ -18,7 +18,7 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
     authbar = (
       <Spin/>
     )
-  } else if (session) { 
+  } else if (session) {
     authbar = (<>
       { (session?.user.role == 'EDITOR' || session?.user.role == 'ADMIN') && !props.hideAdmin ? (
         <Menu.Item key={"admin"}>
@@ -33,7 +33,7 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
           src={<PPicture />}
         />
         <span> </span>
-        <Link href="/profile"><span>{session.user?.name || "Guest"} ({session.user?.email})</span></Link> 
+        <Link href="/profile"><span>{session.user?.name || "Guest"} ({session.user?.email})</span></Link>
         </Menu.Item>
       </> : null}
     </>)
@@ -46,7 +46,7 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
         <Menu.Item key={"session"}>
           <Link href={!session ? '/api/auth/signin' : '/api/auth/signout'}>
             <a href="" onClick={!session ? null : () => signOut()}>
-              {!session ? "Login with gamca account" : "Logout"}
+              {!session ? "Prihlási´t sa cez GAMČA účet" : "Odlásiť sa"}
             </a>
           </Link>
         </Menu.Item>}

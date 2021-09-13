@@ -19,7 +19,7 @@ const { TextArea } = Input;
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
   if (!session?.user) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 const ResultDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLoading: loading, isError: iserr, data: res, error: err } = useQuery("events", fetchEvents)
   const { isLoading, isError, data, error } = useQuery("classes", fetchClasses)
-  const [sub, setSub] = useState(<span>Create</span>)
+  const [sub, setSub] = useState(<span>Vytvoriť</span>)
 
   const submitData = async(values: any) => {
     setSub(<Spin />)
@@ -69,22 +69,22 @@ const ResultDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServ
     <Main
       meta={(
         <Meta
-          title="New event"
-          description="New event creation page"
+          title="Nový výsledok"
+          description="Stránka na vytvorenie nového výsledku"
         />
-      )} 
+      )}
     >
       <AdminHeader />
       <Content>
-        <Link href="/admin">&#60;- Back to dashboard</Link>
+        <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <Form
           name="validate_other"
           {...formItemLayout}
           onFinish={submitData}
           initialValues={{}}
         >
-          <Form.Item label="Creating new">
-            <span className="ant-form-text">Result</span>
+          <Form.Item label="Vytváranie nového">
+            <span className="ant-form-text">Výsledku</span>
           </Form.Item>
           <Form.Item
             {...formItemLayout}
