@@ -42,6 +42,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             }
           },
           results: {
+            include: {
+              class: {
+                select: {
+                  id: true,
+                  name: true,
+                }
+              }
+            },
             orderBy: [{
               points: "desc"
             }]

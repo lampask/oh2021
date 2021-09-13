@@ -10,3 +10,8 @@ export const fetchClasses = async () => {
   return data;
 };
 
+export const fetchResults = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/result`);
+  const data = await res.json();
+  return data;
+};

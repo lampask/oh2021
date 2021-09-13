@@ -7,6 +7,7 @@ import Link from 'next/link'
 import {Discipline} from '.prisma/client';
 
 type IHeaderProps = {
+  setter: Function
   discipline: Discipline & any
   type?: string
   description?: boolean
@@ -35,10 +36,10 @@ const DisciplineHeader: React.FC<IHeaderProps> = (props) => {
         </div>
         <Menu mode="horizontal">
           <Menu.Item key="info">
-            Informácie
+            <a onClick={() => props.setter(0)}>Informácie</a>
           </Menu.Item>
           <Menu.Item key="results">
-            Výsledky
+          <a onClick={() => props.setter(1)}>Výsledky</a>
           </Menu.Item>
         </Menu>
       </div>

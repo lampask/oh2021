@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Main } from '../../layout/Main'
 import { Meta } from '../../layout/Meta'
@@ -7,7 +7,7 @@ import {fetchDiscipline} from '../../../lib/queries/discipline-queries'
 import queryClient from '../../../lib/clients/react-query'
 import { dehydrate } from 'react-query/hydration'
 import {useQuery} from 'react-query'
-import { Layout, Spin } from 'antd'
+import { Layout, Spin, List } from 'antd'
 import {PostList} from '../../components/PostList'
 import DisciplineHeader from '../../layout/DisciplineHeader'
 import ReactMarkdown from 'react-markdown'
@@ -17,6 +17,7 @@ import {useSession} from "next-auth/client";
 import {Event, EventResult} from '.prisma/client'
 import DeadlineEvent from '../../components/DeadlineEvent '
 import {parseISO} from 'date-fns'
+import {ResultList} from '../../components/ResultList'
 
 const { Content, Sider } = Layout;
 
@@ -30,9 +31,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 }
 
-const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [session, loading] = useSession()
   const { isLoading, isError, data, error } = useQuery(["discipline", props.id], () => fetchDiscipline(props.id));
+  const [page, setPage] = useState(0)
 
   if (isLoading) {
     return <Spin />
@@ -40,7 +42,11 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
   if (isError) {
     return <div>Error /// {error}</div>
   }
-  
+
+  const setPageNum = (page: number) => {
+    setPage(page)
+  }
+
   return (
     <Main 
       meta={(
@@ -51,15 +57,22 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
       )}
     >
       <Layout>
-        <DisciplineHeader discipline={data} />
+        <DisciplineHeader setter={setPageNum} discipline={data} />
         <Layout>
           <Content className="content">
+          {page === 0 ? <>
             <div className="discDesc">
               <ReactMarkdown remarkPlugins={[gfm, emoji]} children={data?.description} />
               <br />
               <h3>Články súvisiace s disciplínou:</h3>
             </div>
             <PostList data={data?.posts} />
+          </> : ( page === 1 ? <>
+            <div className="discDesc">
+              <ResultList data={data?.events}/>
+            </div>
+          </> : null)}
+            
           </Content>   
           <Sider className="sider" collapsedWidth="0" theme="light">
             {session ? <div className="discResults">
@@ -67,19 +80,21 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               {data?.events.map((e: Event & any) => {
                 return e.results.map((er: EventResult & any) => {
                   if (er.class.name === session?.user?.class) {
-                    return <h5>{e.name} - {er.place}. miesto</h5>
+                    return <h5 key={e.id}>{e.name} - {er.place}. miesto</h5>
                   }
                   return null;
                 })
               })}
             </div> : null}
             <h1>Udalosti v budúcnosti</h1>
+            <div className="futureEvents">
             {data?.events.map((e: Event & any) => {
               if (parseISO(e.endDate).getTime() > Date.now()) {
-                return <DeadlineEvent event={e} />
+                return <DeadlineEvent key={e.id} event={e} />
               }
               return null; 
             })}
+            </div>
           </Sider>
         </Layout>
         <Footer />
@@ -88,4 +103,4 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
   )
 }
 
-export default MainPost
+export default MainDisc

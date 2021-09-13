@@ -85,6 +85,17 @@
   width: 5rem;
 }
 
+.futureEvents {
+  display: flex;
+  flex-direction: column;
+}
+.discChart {
+  canvas {
+    width: 300px !important;
+    max-width: 300px;
+  }
+}
+
 .discArea {
   h2 {
     display: inline-block;

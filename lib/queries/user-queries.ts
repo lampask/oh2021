@@ -25,3 +25,8 @@ export const fetchProfileById = async (id: Number) => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/profile/${id}`, {responseType: 'json'});
   return res.data;
 }
+
+export const fetchAlbums = async () => {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/album`, {responseType: 'json'});
+  return res.data;
+}

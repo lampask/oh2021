@@ -33,21 +33,27 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     }
   } else if (req.method === "GET") {
     try {
-      const events = await prisma.eventResult.findMany({
+      const results = await prisma.eventResult.findMany({
         include: {
           event: {
             select: {
               id: true,
-              name: true
+              name: true,
+            },
+          },
+          class: {
+            select: {
+              id: true,
+              name: true,
             }
-          }
+          },
         },
         orderBy: [{
           points: "desc"
         }]
       });
-      events.forEach(eve => { eve.points = -1 })
-      return res.status(200).json(events);
+      results.forEach(eve => { eve.points = -1 })
+      return res.status(200).json(results);
     } catch (error) {
       return res.status(422).end();
     }

@@ -185,6 +185,12 @@ model Code {
   longitude     Float?
 }
 
+model Album {
+  id            Int         @default(autoincrement()) @id
+  name          String
+  link          String
+}
+
 enum Role {
   STUDENT
   TEACHER

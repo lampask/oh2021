@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { Badge } from "antd";
 
 export type EventProps = {
@@ -15,12 +15,10 @@ const DeadlineEvent: React.FC<{ event: EventProps }> = ({ event }) => {
   const update = () => {
     if (event.startDate != undefined) {
       var difference = parseISO(event.startDate).getTime()-Date.now();
-      if (difference<0) {
+      if (difference <= 0) {
         difference = parseISO(event.endDate).getTime()-Date.now();
-        if (difference<0) {
+        if (difference>0) {
           ongoing = true
-        } else {
-          return null;
         }
       }
       if (difference > 0) {
@@ -55,8 +53,8 @@ const DeadlineEvent: React.FC<{ event: EventProps }> = ({ event }) => {
   return (
     <div className="event">
       <Badge className="calEvent" color={event.color} status="default" ></Badge>
-      <h4>{event.name}{" -  "}</h4>
-      <h6 style={ongoing ? {fontWeight: "bold"} : {}}>{time ? (time.status ? `${time.days}:${time.hours}:${time.minutes}:${time.seconds}` : "Udalosť skončila") : "Bez časového obmedzenia"}</h6>
+      <h4 style={ongoing ? {fontWeight: "bold"} : {}}>{event.name}{" -  "}</h4>
+      <h6>{time ? (time.status ? `${time.days}:${time.hours}:${time.minutes}:${time.seconds}` : "Udalosť skončila") : "Bez časového obmedzenia"}</h6>
     </div>
   );
 };
