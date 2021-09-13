@@ -14,7 +14,7 @@ const Pagination = (props: IPaginationProps) => (
     {props.previous && (
       <div>
         <Link href={convertUrlToLinkHref(props.previous)} as={props.previous}>
-          <a>← Newer Posts</a>
+          <a>← Novšie príspevky</a>
         </Link>
       </div>
     )}
@@ -22,7 +22,7 @@ const Pagination = (props: IPaginationProps) => (
     {props.next && (
       <div className="text-right ml-auto">
         <Link href={convertUrlToLinkHref(props.next)} as={props.next}>
-          <a>Older Posts →</a>
+          <a>Staršie príspevky →</a>
         </Link>
       </div>
     )}

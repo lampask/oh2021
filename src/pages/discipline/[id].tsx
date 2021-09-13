@@ -48,11 +48,11 @@ const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
   }
 
   return (
-    <Main 
+    <Main
       meta={(
         <Meta
           title={data?.name}
-          description="discipline"
+          description="Disciplína"
         />
       )}
     >
@@ -72,9 +72,15 @@ const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               <ResultList data={data?.events}/>
             </div>
           </> : null)}
+<<<<<<< HEAD
             
           </Content>   
           <Sider className="sider discSider" collapsedWidth="0" theme="light">
+=======
+
+          </Content>
+          <Sider className="sider" collapsedWidth="0" theme="light">
+>>>>>>> b75dedbb0b7e5579fa2a04f576efef922325b418
             {session ? <div className="discResults">
               <h1>Trieda - {session?.user?.class}</h1>
               {data?.events.map((e: Event & any) => {
@@ -92,7 +98,7 @@ const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               if (parseISO(e.endDate).getTime() > Date.now()) {
                 return <DeadlineEvent key={e.id} event={e} />
               }
-              return null; 
+              return null;
             })}
             </div>
           </Sider>

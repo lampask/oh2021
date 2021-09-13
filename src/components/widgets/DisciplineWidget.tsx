@@ -11,7 +11,7 @@ export type DisciplineWidgetProps = {
   deadline?: Date
 };
 
-const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ discipline }) => { 
+const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ discipline }) => {
   const update = () => {
     if (discipline.deadline != undefined) {
       var difference = discipline.deadline.getTime()-Date.now();
@@ -46,7 +46,7 @@ const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ dis
 
   return (
     <span>
-      {time ? (time.status ? `${time.days}:${time.hours}:${time.minutes}:${time.seconds}` : "Discipline Ended") : "No deadline"}
+      {time ? (time.status ? `${time.days}:${time.hours}:${time.minutes}:${time.seconds}` : "Disciplína skončila") : "Bez časového obmedzenia"}
     </span>
   );
 };

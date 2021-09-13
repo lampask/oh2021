@@ -16,7 +16,7 @@ import {Category} from '@prisma/client'
 const { Content } = Layout;
 const { Option } = Select;
 
-const SimpleMdeReact = dynamic(() => 
+const SimpleMdeReact = dynamic(() =>
   import('react-simplemde-editor').then((mod) => mod.SimpleMdeReact), {
     ssr: false
   }
@@ -25,7 +25,7 @@ const SimpleMdeReact = dynamic(() =>
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
   if (!session?.user) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 //props: InferGetServerSidePropsType<typeof getServerSideProps>
 const DisciplineDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
-  const [sub, setSub] = useState(<span>Create</span>)
+  const [sub, setSub] = useState(<span>Vytvoriť</span>)
   const [content, setContent] = useState('')
 
   const submitData = async(values: any) => {
@@ -79,22 +79,22 @@ const DisciplineDraft: React.FC = (props: InferGetServerSidePropsType<typeof get
     <Main
       meta={(
         <Meta
-          title="New discipline"
-          description="New discipline creation page"
+          title="Nová disciplína"
+          description="Stránka na vytváranie novej disciplíny"
         />
-      )} 
+      )}
     >
       <AdminHeader />
       <Content>
-        <Link href="/admin">&#60;- Back to dashboard</Link>
+        <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <Form
           name="validate_other"
           {...formItemLayout}
           onFinish={submitData}
           initialValues={{}}
         >
-          <Form.Item label="Creating new">
-            <span className="ant-form-text">Discipline</span>
+          <Form.Item label="Vytváranie novej">
+            <span className="ant-form-text">Disciplíny</span>
           </Form.Item>
           <Form.Item
             {...formItemLayout}

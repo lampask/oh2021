@@ -38,7 +38,7 @@ const Index = (props: InferGetServerSidePropsType<typeof getServerSideProps>) =>
     <Main
       meta={(
         <Meta
-          title="Home"
+          title="Novinky"
           description={Config.description}
         />
       )}

@@ -13,15 +13,15 @@ const Navbar: React.FC<INavbarProps> = (props) => {
   const isActive: (pathname: string) => boolean = (pathname) =>
     router.pathname === pathname
   return (
-    <Menu mode="horizontal" defaultSelectedKeys={[props.active!]}>  
+    <Menu mode="horizontal" defaultSelectedKeys={[props.active!]}>
       <Menu.Item key={"home"}>
         <Link href="/">
-          <a className="text-bold" data-active={isActive('/')}>Home</a>
+          <a className="text-bold" data-active={isActive('/')}>Novinky</a>
         </Link>
       </Menu.Item>
       <Menu.Item key={"disciplines"}>
         <Link href="/disciplines">
-          <a className="text-bold" data-active={isActive('/')}>Disciplines</a>
+          <a className="text-bold" data-active={isActive('/')}>Disciplíny</a>
         </Link>
       </Menu.Item>
       <Menu.Item key={"results"}>

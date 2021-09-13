@@ -19,7 +19,7 @@ import {Category, Discipline} from '.prisma/client'
 const { Content } = Layout;
 const { Option } = Select;
 
-const SimpleMdeReact = dynamic(() => 
+const SimpleMdeReact = dynamic(() =>
   import('react-simplemde-editor').then((mod) => mod.SimpleMdeReact), {
     ssr: false
   }
@@ -29,7 +29,7 @@ const SimpleMdeReact = dynamic(() =>
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req })
   if (!session?.user) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -82,22 +82,22 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
     <Main
       meta={(
         <Meta
-          title="New post"
-          description="New post creation page"
+          title="Nový príspevok"
+          description="Stránka na vytváranie nového príspevku"
         />
-      )} 
+      )}
     >
       <AdminHeader />
       <Content>
-        <Link href="/admin">&#60;- Back to dashboard</Link>
+        <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <Form
           name="validate_other"
           {...formItemLayout}
           onFinish={submitData}
           initialValues={{}}
         >
-          <Form.Item label="Creating new">
-            <span className="ant-form-text">Post</span>
+          <Form.Item label="Vytváranie nového">
+            <span className="ant-form-text">Príspevku</span>
           </Form.Item>
           <Form.Item
             {...formItemLayout}
@@ -161,7 +161,7 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
             <SimpleMdeReact value={content} onChange={onChange}  />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-            <Button disabled={!content || !title} value="Create" htmlType="submit">Create</Button>
+            <Button disabled={!content || !title} value="Create" htmlType="submit">Vytvoriť</Button>
           </Form.Item>
         </Form>
         <br/>

@@ -12,14 +12,14 @@ const Results: React.FC = (props) => {
     <Main
       meta={(
         <Meta
-          title="Results"
-          description="Overall results of the competition"
+          title="Výsledky"
+          description="Celkové výsledky olympiády"
         />
       )}
     >
-      <ResultsHeader /> 
+      <ResultsHeader />
       <Content>
-        Results
+        Výsledky
         {props.children}
       </Content>
       <Footer />

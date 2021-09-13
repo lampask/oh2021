@@ -13,7 +13,7 @@ const { Content } = Layout;
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
   if (!session?.user || !session?.user?.email) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') {
-    return { 
+    return {
       redirect: {
         destination: '/404',
         permanent: false,
@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: { 
+    props: {
     },
   }
 }
@@ -43,7 +43,7 @@ const Dashboard: React.FC = (props: InferGetServerSidePropsType<typeof getServer
     <Main
       meta={
         <Meta
-          title="Admin dashpoard"
+          title="Admin dashboard"
           description=""
         />
       }
@@ -51,15 +51,15 @@ const Dashboard: React.FC = (props: InferGetServerSidePropsType<typeof getServer
       <AdminHeader />
       <Content>
         <ul>
-          <li>Create:</li>
-          <li><Link href="/admin/create/result">Create new album</Link></li>
-          <li><Link href="/admin/create/result">Create new result</Link></li>
-          <li><Link href="/admin/create/discipline">Create new discipline</Link></li>
-          <li><Link href="/admin/create/event">Create new event</Link></li>
-          <li><Link href="/admin/create">Create new post</Link></li>
-          <li>Other:</li>
-          <li><Link href="/admin/posts">Manage posts</Link></li>
-          <li><Link href="/admin/events">Manage events</Link></li>
+          Vytvoriť:
+          <li><Link href="/admin/create">Vytvoriť nový príspevok</Link></li>
+          <li><Link href="/admin/create/event">Vytvoriť novú udalosť</Link></li>
+          <li><Link href="/admin/create/album">Vytvoriť nový album</Link></li>
+          <li><Link href="/admin/create/result">Vytvoriť nový výsledok</Link></li>
+          <li><Link href="/admin/create/discipline">Vytvoriť novú disciplínu</Link></li>
+          Ostatné:
+          <li><Link href="/admin/posts">Soravovať príspevky</Link></li>
+          <li><Link href="/admin/events">Spravovať udalosti</Link></li>
           <li><Link href="/admin/q">QR Codes</Link></li>
         </ul>
       </Content>

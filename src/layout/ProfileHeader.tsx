@@ -28,7 +28,7 @@ const ProfileHeader: React.FC<IProfileHeaderProps> = (props) => {
   let imgData = ""
   if (props.user != null && props.user.imageData != null) {
     imgData = URL.createObjectURL(new Blob([Buffer.from(props.user.imageData!, 'base64')], {type: 'image/jpeg'}))
-  } 
+  }
 
   return (
     <header className="p-4 border-b border-gray-300">
@@ -43,7 +43,7 @@ const ProfileHeader: React.FC<IProfileHeaderProps> = (props) => {
           <h1 className="font-bold">{props.user ? props.user.name : ""}</h1>
           <small>{props.user ? props.user.email: ""}</small>
           <br/>
-          <h4>About me</h4>
+          <h4>O mne</h4>
           <small><i>{props.user ? props.user.aboutMe : "..."}</i></small>
         </div>
         <div>

@@ -23,7 +23,7 @@ const ProfileHeader = dynamic(() => import("../../layout/ProfileHeader"), {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
   if (!session?.user) {
-    return { 
+    return {
       redirect: {
         destination: '/api/auth/signin',
         permanent: false,
@@ -66,14 +66,14 @@ export const ProfileComp: React.FC<ProfileProps> = (props) => {
       meta={(
         <Meta
           title={props.user.name}
-          description="Users profile page"
+          description="Profil používateľa"
         />
       )}
     >
-      <ProfileHeader user={props.user}/> 
+      <ProfileHeader user={props.user}/>
       <Content>
         <div className="mt-10">
-        Posts authored by this user:
+        Príspevky zverejnené používateľom:
         <PostList qkey="profPosts" query={fetchProfilePosts} />
         </div>
       </Content>
