@@ -58,7 +58,7 @@ const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
     >
       <Layout>
         <DisciplineHeader setter={setPageNum} discipline={data} />
-        <Layout>
+        <Layout className="limit-reversed">
           <Content className="content">
           {page === 0 ? <>
             <div className="discDesc">
@@ -74,7 +74,7 @@ const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
           </> : null)}
             
           </Content>   
-          <Sider className="sider" collapsedWidth="0" theme="light">
+          <Sider className="sider discSider" collapsedWidth="0" theme="light">
             {session ? <div className="discResults">
               <h1>Trieda - {session?.user?.class}</h1>
               {data?.events.map((e: Event & any) => {

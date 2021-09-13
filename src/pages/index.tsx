@@ -49,7 +49,11 @@ const Index = (props: InferGetServerSidePropsType<typeof getServerSideProps>) =>
           <Content className="content">
             <PostList qkey="posts" query={fetchPosts}/>
           </Content>
-          <Sider className="sider" collapsedWidth="0" theme="light"><CalendarWidget /><br/><br/></Sider>
+          <Sider 
+            className="sider"
+            theme="light"
+            width="310"
+          ><CalendarWidget /></Sider>
         </Layout>
         <Footer />
       </Layout>

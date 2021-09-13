@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { ReactNode } from 'react';
 import { Menu, Spin, Avatar } from 'antd';
 import PPicture from './PPicture';
+import { UserOutlined } from "@ant-design/icons"
 
 type IAuthbarProps = {
   children?: ReactNode
@@ -40,7 +41,7 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
   }
   return (
     <div className="menuContainer">
-      <Menu mode="horizontal">
+      <Menu mode="horizontal" expandIcon={<UserOutlined/>}>
         {authbar}
         {loading ? null :
         <Menu.Item key={"session"}>

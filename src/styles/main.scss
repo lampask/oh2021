@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'VCRMono';
+  src: local('VCRMono'), url(../font/VCR_OSD_MONO_1.001.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'OHGamca';
+  src: local('OHGamca'), url(../font/OhHypnozaBroken-Regular.ttf) format('truetype');
+}
+
 .full {
   width: 100wv;
   position: relative;
@@ -13,6 +23,23 @@
 
 .limit {
   max-width: 100vw;
+  @media screen and (max-width: 600px){
+    flex-direction: column-reverse !important;
+  }
+}
+
+.limit-reversed {
+  max-width: 100vw;
+  @media screen and (max-width: 600px){
+    flex-direction: column !important;
+  }
+}
+
+.discSider {
+  @media screen and (max-width: 600px){
+    margin-top: -2rem;
+    margin-bottom: 5rem;
+  }
 }
 
 .menuContainer {
@@ -21,11 +48,15 @@
   justify-content: flex-end;
   height: 67px;
 }
+
 .sider {
+  @media screen and (max-width: 600px){
+    width: 100% !important;
+  }
   flex: initial !important;
   max-width: initial !important;
   max-height: initial !important;
-  width: auto !important;
+  overflow-x: hidden;
   padding: .5rem;
 }
 
@@ -36,6 +67,7 @@
 
 .eList {
   display: grid;
+  margin-bottom: 2rem;
 }
 
 .events {
@@ -76,6 +108,7 @@
 .smalltitleArea {
   margin-top: -3.5rem;
   h1 {
+    font-family: 'OHGamca';
     display: inline-block;
   }
 }
@@ -91,8 +124,7 @@
 }
 .discChart {
   canvas {
-    width: 300px !important;
-    max-width: 300px;
+    max-height: 200px;
   }
 }
 
@@ -124,7 +156,16 @@
 
 .titleArea {
   display: inline-flex;
+  @media screen and (max-width: 400px){
+    display: block;
+    padding-top: 3rem;
+    font-size: small;
+    text-align: center;
+  }
   place-items: flex-end;
+  h1 {
+    font-family: 'OHGamca';
+  }
   .logo img {
     width: 260px;
     margin: -40px;
@@ -153,7 +194,6 @@
 }
 
 .postList {
-  min-height: 350px;
   padding: 1rem !important;
 }
 
@@ -258,6 +298,9 @@
   font-size: 28px;
 }
 .site-calendar-widget {
+  @media screen and (max-width: 600px){
+    width: fit-content;
+  }
   width: 300px;
   border: 1px solid #f0f0f0;
   border-radius: 2px;

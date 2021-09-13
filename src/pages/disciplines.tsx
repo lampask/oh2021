@@ -69,6 +69,8 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
         },
       ],
     },
+    responsive: true,
+    maintainAspectRatio: false,
   };
   
 
@@ -91,7 +93,7 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
             <Sider className="sider" collapsedWidth="0" theme="light"> 
               <div className="discChart">
                 <h1>Trieda - {session.user.class}</h1>
-                <Bar width={300} data={data} options={options} />
+                <Bar height={150} data={data} options={options} />
               </div>
             </Sider></>
           :  <Content className="content">
