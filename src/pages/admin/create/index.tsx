@@ -10,7 +10,7 @@ import AdminHeader from '../../../layout/AdminHeader'
 import Footer from '../../../layout/AppFooter'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import {  Form, Select, Input, Layout, Button } from 'antd'
+import {  Form, Select, Input, Layout, Button, Spin } from 'antd'
 import {title} from 'process'
 import {useQuery} from 'react-query'
 import {fetchDisciplines} from '../../../../lib/queries/discipline-queries'
@@ -54,8 +54,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
 const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
   const [content, setContent] = useState('')
+  const [sub, setSub] = useState(<span>Vytvoriť</span>)
 
   const submitData = async(values: any) => {
+    setSub(<Spin />)
     try {
       values.content = content
       await fetch('/api/post', {
@@ -161,7 +163,7 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
             <SimpleMdeReact value={content} onChange={onChange}  />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-            <Button disabled={!content || !title} value="Create" htmlType="submit">Vytvoriť</Button>
+            <Button disabled={!content || !title} value="Create" htmlType="submit">{sub}</Button>
           </Form.Item>
         </Form>
         <br/>

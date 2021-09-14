@@ -91,19 +91,19 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               { "  " }
               {
                 ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                  <Button onClick={() => deleteP.mutate(props.id)}>Editovať</Button>
+                  <Button disabled={true} onClick={() => deleteP.mutate(props.id)}>Editovať</Button>
                 )
               }
               { "  " }
               {
                 ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                  <Button onClick={() => deleteP.mutate(props.id)}>Vymazať</Button>
+                  <Button onClick={() => {deleteP.mutate(props.id); router.push("/")}}>Vymazať</Button>
                 )
               }
               </>
             </div>
           </Content>
-          <Sider className="sider" collapsedWidth="0" theme="light">bočná vec</Sider>
+          {/* <Sider className="sider" collapsedWidth="0" theme="light">bočná vec</Sider> */}
         </Layout>
         <Footer />
       </Layout>

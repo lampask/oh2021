@@ -54,7 +54,7 @@ const ResultDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServ
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      await Router.push('/admin/events')
+      await Router.push('/admin')
     } catch (error) {
       console.error(error)
     }

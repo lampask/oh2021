@@ -10,6 +10,7 @@ import {fetchEvents} from '../../../lib/queries/event-queries'
 import {dehydrate} from 'react-query/hydration'
 import {useQuery} from 'react-query'
 import Link from 'next/link'
+import Router from 'next/router'
 import { Layout, Table, Space, Spin } from 'antd'
 
 const { Content } = Layout;
@@ -43,8 +44,19 @@ const columns = [
     key: 'action',
     render: (text, record) => (
       <Space size="middle">
-        <a>Editovať</a>
-        <a>Vymazať</a>
+        <>Editovať</>
+        <a onClick={async() => {
+          try {
+            await fetch('/api/event', {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: record.id}),
+            })
+            await Router.push('/admin/events')
+          } catch (error) {
+            console.error(error)
+          }
+        }}>Vymazať</a>
       </Space>
     ),
   }
