@@ -5,9 +5,9 @@ export const Base = {
 
 export const Config = {
   site_name: `OH ${Base.oh_name}`,
-  title: `OH ${Base.oh_name} 21/22`,
-  description: 'yo yo mame stranku pog',
-  url: 'https://oh.gamca.sk',
+  title: `OH ${Base.oh_name}`,
+  description: 'Oficiálna stránka OH Gamča 2021',
+  url: 'https://2021.oh.gamca.sk',
   locale: 'sk',
   author: 'ohDevTeam',
   pagination_size: 5,
