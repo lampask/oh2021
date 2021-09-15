@@ -9,11 +9,78 @@ import queryClient from '../../../lib/clients/react-query'
 import {fetchAdminPosts} from '../../../lib/queries/post-queries'
 import {dehydrate} from 'react-query/hydration'
 import {useQuery} from 'react-query'
-import {AdminPostList} from '../../components/AdminPostList'
 import Link from 'next/link'
-import { Layout } from 'antd'
+import { Tag, Layout, Space, Table, Spin } from 'antd'
+import Router from 'next/router'
 
 const { Content } = Layout;
+
+const columns = [
+  {
+    title: 'Nadpis',
+    dataIndex: 'title',
+    key: 'title',
+    render: (text, record) => (
+      <span><Link href="/post/[id]" as={`/post/${record.id}`}><a>{text}</a></Link>{record.published ? null : <>    <Tag color="red">Draft</Tag></>}</span>
+    ),
+  },
+  {
+    title: 'Disciplína',
+    dataIndex: 'disciplines',
+    key: 'disciplines',
+    render: (text, record) => (
+      <Link href="/discipline/[id]" as={`/discipline/${record.disciplines[0]?.id}`}><a>{record.disciplines[0]?.name}</a></Link>
+    ),
+  },
+  {
+    title: 'Kategórie',
+    dataIndex: 'categories',
+    key: 'categories',
+    render: (text, record) => (
+      record.categories?.map(x => (<Tag>{x.name}</Tag>))
+    ),
+  },
+  {
+    title: 'Akcia',
+    key: 'action',
+    render: (text, record) => (
+      <Space size="middle">
+          {!record.published ? 
+            <a onClick={async() => {
+              try {
+                await fetch(`/api/post/publish/${record.id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                })
+               queryClient.refetchQueries("adminPosts")
+             } catch (error) {
+               console.error(error)
+             }
+           }}>Publikovať</a>
+          : null}
+         <a onClick={async() => {
+           try {
+            await Router.push(`/admin/edit/${record.id}`)
+          } catch (error) {
+            console.error(error)
+          }
+        }}>Editovať</a>
+        <a onClick={async() => {
+          try {
+            await fetch(`/api/post/${record.id}`, {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+            })
+            queryClient.refetchQueries("adminPosts")
+          } catch (error) {
+            console.error(error)
+          }
+        }}>Vymazať</a>
+      </Space>
+    ),
+  }
+]
+
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
@@ -49,11 +116,11 @@ const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
 
   let table = null
   if (isLoading) {
-    table = <p>Loading...</p>
+    table = <Spin />
   } else if (isError) {
     table = <p>Error /// {error}</p>
   } else {
-    table = <AdminPostList posts={data} pagination={{}}/>
+    table = <Table columns={columns} dataSource={data} />
   }
 
   return (

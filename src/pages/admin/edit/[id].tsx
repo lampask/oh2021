@@ -5,13 +5,18 @@ import Router from 'next/router'
 import { Main } from '../../../layout/Main'
 import { Meta } from '../../../layout/Meta'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { getSession } from 'next-auth/client'
+import { getSession, useSession } from 'next-auth/client'
 import AdminHeader from '../../../layout/AdminHeader'
 import Footer from '../../../layout/AppFooter'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import {  Form, Select, Input, Layout, Button } from 'antd'
-import {title} from 'process'
+import {  Form, Select, Input, Layout, Button, Spin } from 'antd'
+import {fetchPost} from '../../../../lib/queries/post-queries'
+import queryClient from '../../../../lib/clients/react-query'
+import { dehydrate } from 'react-query/hydration'
+import {useQuery} from 'react-query'
+import {fetchDisciplines} from '../../../../lib/queries/discipline-queries'
+import {Category, Discipline} from '.prisma/client'
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -23,7 +28,7 @@ const SimpleMdeReact = dynamic(() =>
 )
 
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
   const session = await getSession({ req })
   if (!session?.user) {
     return { 
@@ -43,19 +48,28 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
   }
 
+  await queryClient.prefetchQuery(["post", Number(params?.id) || -1], () => fetchPost(Number(params?.id) || -1));
   return {
-    props: {}
+    props: {
+      id: Number(params?.id) || -1,
+      dehydratedState: dehydrate(queryClient)
+    }
   }
 }
 //props: InferGetServerSidePropsType<typeof getServerSideProps>
 const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [content, setContent] = useState('')
+  const [session, loading] = useSession()
+  const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
+  const { data: pres, isLoading: propLoad } = useQuery(["post", props.id], () => fetchPost(props.id));
+  const [sub, setSub] = useState(<span>Upraviť</span>)
+  const [content, setContent] = useState(pres?.content)
 
   const submitData = async(values: any) => {
+    setSub(<Spin/>)
     try {
       values.content = content
-      await fetch('/api/post', {
-        method: 'POST',
+      await fetch(`/api/post/${pres?.id}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
@@ -86,6 +100,7 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
       <AdminHeader />
       <Content>
         <Link href="/admin">&#60;- Back to dashboard</Link>
+        {!isLoading && !propLoad && !loading ? <>{pres?.author.id == session?.user.id || session?.user.role == 'ADMIN' ?
         <Form
           name="validate_other"
           {...formItemLayout}
@@ -99,6 +114,7 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
             {...formItemLayout}
             name="title"
             label="Názov"
+            initialValue={pres?.title}
             rules={[
               {
                 required: true,
@@ -114,47 +130,53 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
           <Form.Item
             name="discipline"
             label="Disciplína"
+            initialValue={pres?.disciplines[0].id}
             hasFeedback
             rules={[{ required: false }]}
           >
             <Select placeholder="Vyber disciplínu">
-              <Option value="1">A</Option>
-              <Option value="2">B</Option>
+              {
+                data?.disciplines.map((discipline: Discipline) => (
+                  <Option value={discipline.id}>{discipline.name}</Option>
+                ))
+              }
             </Select>
           </Form.Item>
           <Form.Item
             name="categories"
             label="Kategórie"
+            initialValue={pres?.categories?.map(x => x.id)}
             rules={[{ required: false, type: 'array' }]}
           >
             <Select mode="multiple" placeholder="Vyberte kategórie">
-              <Option value="1">A</Option>
-              <Option value="2">B</Option>
-              <Option value="3">C</Option>
+              {
+                data?.categories.map((category: Category) => (
+                  <Option value={category.id}>{category.name}</Option>
+                ))
+              }
             </Select>
           </Form.Item>
           <Form.Item
             name="tags"
             label="Tagy"
+            initialValue={pres?.tags?.map(x => x.id)}
             rules={[{ required: false, type: 'array' }]}
           >
-            <Select mode="multiple" placeholder="Vyberte tagy">
-              <Option value="1">A</Option>
-              <Option value="2">B</Option>
-              <Option value="3">C</Option>
+            <Select mode="multiple" disabled={true} placeholder="Vyberte tagy">
             </Select>
           </Form.Item>
           <Form.Item
             name="content"
             label="Obsah"
+            initialValue={pres?.content}
             rules={[{ required: true }]}
           >
             <SimpleMdeReact value={content} onChange={onChange}  />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-            <Button disabled={!content || !title} value="Create" htmlType="submit">Create</Button>
+            <Button value="Submit" htmlType="submit">{sub}</Button>
           </Form.Item>
-        </Form>
+        </Form> : <p>Na upravovanie tohoto postu nemáš dostatočné práva. (Niesi autorom)</p>}</> : <><br/><Spin/></>}
         <br/>
       </Content>
       <Footer />

@@ -91,7 +91,7 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
               { "  " }
               {
                 ((userHasValidSession && postBelongsToUser) || session?.user.role == 'ADMIN' ) && (
-                  <Button disabled={true} onClick={() => deleteP.mutate(props.id)}>Editovať</Button>
+                  <Button onClick={() => router.push(`/admin/edit/${data.id}`)}>Editovať</Button>
                 )
               }
               { "  " }

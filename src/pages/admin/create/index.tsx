@@ -149,10 +149,7 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
             label="Tagy"
             rules={[{ required: false, type: 'array' }]}
           >
-            <Select mode="multiple" placeholder="Vyberte tagy">
-              <Option value="1">A</Option>
-              <Option value="2">B</Option>
-              <Option value="3">C</Option>
+            <Select mode="multiple" disabled={true} placeholder="Vyberte tagy">
             </Select>
           </Form.Item>
           <Form.Item
@@ -163,7 +160,7 @@ const Draft: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
             <SimpleMdeReact value={content} onChange={onChange}  />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-            <Button disabled={!content || !title} value="Create" htmlType="submit">{sub}</Button>
+            <Button value="Create" htmlType="submit">{sub}</Button>
           </Form.Item>
         </Form>
         <br/>

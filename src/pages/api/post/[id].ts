@@ -13,6 +13,21 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           author: {
             select: { id: true, name: true },
           },
+          disciplines: {
+            select: {
+              id: true,
+            }
+          },
+          categories: {
+            select: {
+              id: true,
+            }
+          },
+          tags: {
+            select: {
+              id: true,
+            }
+          },
         },
         where: { id: Number(postId) }
       })
@@ -41,6 +56,45 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       })
       res.status(200).json(post)
     } catch (error) {
+      return res.status(422).end();
+    }
+  } else if (req.method === 'PATCH') {
+    try {
+      const { title, discipline, categories, tags, content } = req.body
+      const session = await getSession({ req })
+      if (!session) return res.status(401).end();
+      const postQ = await prisma.post.findUnique({
+        select: {
+          author: {
+            select: { id: true },
+          },
+        },
+        where: { id: Number(postId) }
+      })
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR' || session?.user.id != postQ?.author.id) return res.status(401).end();
+      const post = await prisma.post.update({
+        where: {
+          id: Number(postId),
+        },
+        data: {
+          title: title,
+          disciplines: {
+            connect: discipline ? { id: parseInt(discipline!) } : undefined,
+          },
+          slug: title.replace(/ /g, '-').toLowerCase(),
+          content: content,
+          categories: {
+            connect: categories?.map((id: string) => {return { id: parseInt(id) }}),
+          },
+          tags: {
+            connect: tags?.map((id: string) => {return { id: parseInt(id) }}),
+          },
+          author: { connect: { email: session?.user?.email! } },
+        },
+      })
+      return res.status(201).json(post);
+    } catch (error) {
+      console.error(error)
       return res.status(422).end();
     }
   } else {
