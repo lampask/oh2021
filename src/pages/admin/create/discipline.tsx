@@ -119,7 +119,7 @@ const DisciplineDraft: React.FC = (props: InferGetServerSidePropsType<typeof get
             rules={[{ required: false }]}
           >
             <Input
-              type="url"
+              type="text"
             />
           </Form.Item>
           <Form.Item
