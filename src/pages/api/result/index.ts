@@ -34,6 +34,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     }
   } else if (req.method === "GET") {
     try {
+      const session = await getSession({ req })
       const results = await prisma.eventResult.findMany({
         include: {
           event: {
@@ -53,12 +54,28 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           points: "desc"
         }]
       });
-      results.forEach(eve => { eve.points = -1 })
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR') results.forEach(eve => { eve.points = -1 })
       return res.status(200).json(results);
     } catch (error) {
       return res.status(422).end();
     }
-  } else {
+  } else if (req.method === "DELETE") {
+    try {
+      const { id } = req.body
+      const session = await getSession({ req })
+      if (!session) return res.status(401).end();
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR') return res.status(401).end();
+      const events = await prisma.eventResult.delete({
+        where: {
+          id: id
+        }
+      })
+      return res.status(200).json(events);
+    } catch (error) {
+      console.error(error)
+      return res.status(422).end();
+    }
+  }else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
     )
