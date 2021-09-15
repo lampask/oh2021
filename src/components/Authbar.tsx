@@ -47,7 +47,7 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
         <Menu.Item key={"session"}>
           <Link href={!session ? '/api/auth/signin' : '/api/auth/signout'}>
             <a href="" onClick={!session ? null : () => signOut()}>
-              {!session ? "Prihlási´t sa cez GAMČA účet" : "Odlásiť sa"}
+              {!session ? "Prihlásiť sa cez GAMČA účet" : "Odlásiť sa"}
             </a>
           </Link>
         </Menu.Item>}
