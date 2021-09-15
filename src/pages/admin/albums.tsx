@@ -6,38 +6,28 @@ import { Meta } from '../../layout/Meta'
 import Footer from '../../layout/AppFooter'
 import AdminHeader from '../../layout/AdminHeader'
 import queryClient from '../../../lib/clients/react-query'
-import {fetchEvents, fetchResults} from '../../../lib/queries/event-queries'
 import {dehydrate} from 'react-query/hydration'
 import {useQuery} from 'react-query'
 import Link from 'next/link'
 import Router from 'next/router'
 import { Layout, Table, Space, Spin } from 'antd'
+import {fetchAlbums} from '../../../lib/queries/user-queries'
 
 const { Content } = Layout;
 
 const columns = [
   {
-    title: 'Miesto',
-    dataIndex: 'place',
-    key: 'place',
+    title: 'Názov',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
-    title: 'Trieda',
-    dataIndex: 'class',
-    key: 'class',
+    title: 'Link',
+    dataIndex: 'link',
+    key: 'link',
     render: (text, record) => (
-      <span>{record.class.name}</span>
-    ),
-  },
-  {
-    title: 'Body',
-    dataIndex: 'points',
-    key: 'points',
-  },
-  {
-    title: 'Popis',
-    dataIndex: 'description',
-    key: 'description',
+      <Link href={record.link}>{text}</Link>
+    )
   },
   {
     title: 'Akcia',
@@ -47,12 +37,12 @@ const columns = [
         <>Editovať</>
         <a onClick={async() => {
           try {
-            await fetch('/api/result', {
+            await fetch('/api/album', {
               method: 'DELETE',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ id: record.id}),
             })
-            await Router.push('/admin/results')
+            await Router.push('/admin/albums')
           } catch (error) {
             console.error(error)
           }
@@ -82,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
 
-  await queryClient.prefetchQuery("results", fetchResults);
+  await queryClient.prefetchQuery("albums", fetchAlbums);
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
@@ -90,8 +80,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-const Results: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { isLoading, isError, data, error } = useQuery("results", fetchResults);
+const Albums: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLoading, isError, data, error } = useQuery("albums", fetchAlbums);
   const [session] = useSession()
 
   let table = null
@@ -107,7 +97,7 @@ const Results: React.FC = (props: InferGetServerSidePropsType<typeof getServerSi
     <Main
       meta={
         <Meta
-          title="Spravovanie výsledkov"
+          title="Spravovanie albumov"
           description=""
         />
       }
@@ -115,7 +105,7 @@ const Results: React.FC = (props: InferGetServerSidePropsType<typeof getServerSi
       <AdminHeader />
       <Content>
         <Link href="/admin">&#60;- Naspäť na dashboard</Link>
-        <h6 className="underline">List všetkých výsledkov</h6>
+        <h6 className="underline">List všetkých albumov</h6>
         { session ?
           table
         : <div>Musíš byť overený aby si videl túto stránku.</div>}
@@ -125,4 +115,4 @@ const Results: React.FC = (props: InferGetServerSidePropsType<typeof getServerSi
   )
 }
 
-export default Results
+export default Albums

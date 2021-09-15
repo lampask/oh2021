@@ -6,7 +6,6 @@ import { Meta } from '../../layout/Meta'
 import Footer from '../../layout/AppFooter'
 import AdminHeader from '../../layout/AdminHeader'
 import queryClient from '../../../lib/clients/react-query'
-import {fetchEvents} from '../../../lib/queries/event-queries'
 import {dehydrate} from 'react-query/hydration'
 import {useQuery} from 'react-query'
 import Link from 'next/link'
@@ -77,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-const Events: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const AdminDisciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines);
   const [session] = useSession()
 
@@ -112,4 +111,4 @@ const Events: React.FC = (props: InferGetServerSidePropsType<typeof getServerSid
   )
 }
 
-export default Events
+export default AdminDisciplines

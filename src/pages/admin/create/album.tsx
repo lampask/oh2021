@@ -51,7 +51,7 @@ const AlbumDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServe
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      await Router.push('/admin')
+      await Router.push('/admin/albums')
     } catch (error) {
       console.error(error)
     }
