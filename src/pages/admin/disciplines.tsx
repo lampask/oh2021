@@ -10,7 +10,9 @@ import {fetchEvents} from '../../../lib/queries/event-queries'
 import {dehydrate} from 'react-query/hydration'
 import {useQuery} from 'react-query'
 import Link from 'next/link'
+import Router from 'next/router'
 import { Layout, Table, Space, Spin } from 'antd'
+import {fetchDisciplines} from '../../../lib/queries/discipline-queries'
 
 const { Content } = Layout;
 
@@ -21,30 +23,27 @@ const columns = [
     key: 'name',
   },
   {
-    title: 'Začiatok',
-    dataIndex: 'startDate',
-    key: 'startDate',
-  },
-  {
-    title: 'Koniec',
-    dataIndex: 'endDate',
-    key: 'endDate',
-  },
-  {
-    title: 'Disciplína',
-    dataIndex: 'discipline',
-    key: 'discipline',
-    render: (record: any) => (
-      <Link href="/discipline/[id]" as={`/discipline/${record.discipline.id}`}>{record.discipline.name}</Link>
-    ),
+    title: 'Ikona',
+    dataIndex: 'icon',
+    key: 'icon',
   },
   {
     title: 'Akcia',
     key: 'action',
-    render: () => (
+    render: (text, record) => (
       <Space size="middle">
-        <a>Editovať</a>
-        <a>Vymazať</a>
+        <>Editovať</>
+        <a onClick={async() => {
+          try {
+            await fetch(`/api/discipline/${record.id}`, {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+            })
+            await Router.push('/admin/disciplines')
+          } catch (error) {
+            console.error(error)
+          }
+        }}>Vymazať</a>
       </Space>
     ),
   }
@@ -70,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     }
   }
 
-  await queryClient.prefetchQuery("events", fetchEvents);
+  await queryClient.prefetchQuery("disciplines", fetchDisciplines);
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
@@ -78,8 +77,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-const ADisciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { isLoading, isError, data, error } = useQuery("events", fetchEvents);
+const Events: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines);
   const [session] = useSession()
 
   let table = null
@@ -88,7 +87,7 @@ const ADisciplines: React.FC = (props: InferGetServerSidePropsType<typeof getSer
   } else if (isError) {
     table = <p>Error /// {error}</p>
   } else {
-    table = <Table columns={columns} dataSource={data} />
+    table = <Table columns={columns} dataSource={data?.disciplines} />
   }
 
   return (
@@ -113,4 +112,4 @@ const ADisciplines: React.FC = (props: InferGetServerSidePropsType<typeof getSer
   )
 }
 
-export default ADisciplines
+export default Events
