@@ -10,37 +10,45 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Sifra {
+  id        Int      @id @default(autoincrement())
+  name      String
+  answer    String
+  startTime DateTime
+}
+
 model Post {
-  id            Int           @default(autoincrement()) @id
-  title         String
-  slug          String
-  description   String?
-  createdAt     DateTime      @default(now()) @map(name: "created_at")
-  updatedAt     DateTime      @updatedAt @map(name: "updated_at")
-  image         String?
-  content       String?
-  published     Boolean       @default(false)
-  author        User          @relation(fields: [authorId], references: [id])
-  authorId      Int
-  comments      Comment[]
-  categories    Category[]    @relation(references: [id])
-  tags          Tag[]         @relation(references: [id])
-  disciplines   Discipline[]  @relation(references: [id])
+  id          Int          @id @default(autoincrement())
+  title       String
+  slug        String
+  description String?
+  createdAt   DateTime     @default(now()) @map(name: "created_at")
+  updatedAt   DateTime     @updatedAt @map(name: "updated_at")
+  image       String?
+  content     String?
+  published   Boolean      @default(false)
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    Int
+  comments    Comment[]
+  categories  Category[]   @relation(references: [id])
+  tags        Tag[]        @relation(references: [id])
+  disciplines Discipline[] @relation(references: [id])
 }
 
 model Comment {
-  id            Int           @id @default(autoincrement())
-  content       String?
-  post          Post?         @relation(fields: [postId], references: [id])
-  postId        Int?
-  createdAt     DateTime      @default(now()) @map(name: "created_at")
-  updatedAt     DateTime      @updatedAt @map(name: "updated_at")
-  author        User          @relation("CommentsAuthored", fields: [authorId], references: [id])
-  authorId      Int
-  likedBy       User[]        @relation(references: [id])
-  child         Comment?      @relation("CommentTree", fields: [childId], references: [id])
-  parent        Comment?      @relation("CommentTree")
-  childId       Int?
+  id        Int      @id @default(autoincrement())
+  content   String?
+  post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  author    User     @relation("CommentsAuthored", fields: [authorId], references: [id])
+  authorId  Int
+  likedBy   User[]   @relation(references: [id])
+  child     Comment? @relation("CommentTree", fields: [childId], references: [id])
+  parent    Comment? @relation("CommentTree")
+  childId   Int?
+
   @@map(name: "comments")
 }
 
@@ -51,16 +59,16 @@ model User {
   emailVerified DateTime? @map(name: "email_verified")
   imageData     Bytes?
   password      String?
-  role          Role          @default(USER)
-  createdAt     DateTime      @default(now()) @map(name: "created_at")
-  updatedAt     DateTime      @updatedAt @map(name: "updated_at")
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   posts         Post[]
-  class         Class?        @relation(fields: [classId], references: [id])
+  class         Class?    @relation(fields: [classId], references: [id])
   classId       Int?
-  publicProfile Boolean       @default(true)
-  aboutMe       String?       
-  comments      Comment[]     @relation("CommentsAuthored")
-  likes         Comment[]     @relation(references: [id])
+  publicProfile Boolean   @default(true)
+  aboutMe       String?
+  comments      Comment[] @relation("CommentsAuthored")
+  likes         Comment[] @relation(references: [id])
   accounts      Account[]
   sessions      Session[]
 
@@ -80,13 +88,13 @@ model Account {
   createdAt          DateTime  @default(now()) @map(name: "created_at")
   updatedAt          DateTime  @updatedAt @map(name: "updated_at")
   user               User      @relation(fields: [userId], references: [id])
- 
-  @@unique([providerId, providerAccountId])
 
+
+
+  @@unique([providerId, providerAccountId])
   @@index([providerAccountId], name: "providerAccountId")
   @@index([providerId], name: "providerId")
   @@index([userId], name: "userId")
-
   @@map(name: "accounts")
 }
 
@@ -99,7 +107,7 @@ model Session {
   createdAt    DateTime @default(now()) @map(name: "created_at")
   updatedAt    DateTime @updatedAt @map(name: "updated_at")
   user         User     @relation(fields: [userId], references: [id])
-  
+
   @@map(name: "sessions")
 }
 
@@ -108,87 +116,90 @@ model VerificationRequest {
   identifier String
   token      String   @unique
   expires    DateTime
-  createdAt  DateTime  @default(now()) @map(name: "created_at")
-  updatedAt  DateTime  @updatedAt @map(name: "updated_at")
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @updatedAt @map(name: "updated_at")
 
   @@map(name: "verification_requests")
 }
 
 model Category {
-  id            Int           @default(autoincrement()) @id
-  name          String
-  icon          String?
-  disciplines   Discipline[]
-  posts         Post[]        @relation(references: [id])
+  id          Int          @id @default(autoincrement())
+  name        String
+  icon        String?
+  disciplines Discipline[]
+  posts       Post[]       @relation(references: [id])
 }
 
 model Discipline {
-  id            Int           @default(autoincrement()) @id
-  name          String
-  slug          String
-  icon          String?
-  description   String?
-  category      Category?     @relation(fields: [categoryId], references: [id])
-  categoryId    Int?
-  tags          Tag[]         @relation(references: [id])
-  posts         Post[]        @relation(references: [id])
-  events        Event[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String
+  icon        String?
+  description String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  tags        Tag[]     @relation(references: [id])
+  posts       Post[]    @relation(references: [id])
+  events      Event[]
 }
 
 model EventResult {
-  id            Int           @default(autoincrement()) @id
-  points        Int
-  place         Int
-  description   String?
-  classId       Int
-  class         Class         @relation(fields: [classId], references: [id])
-  parentId      Int
-  event         Event    @relation(fields: [parentId], references: [id])
+  id          Int     @id @default(autoincrement())
+  points      Int
+  place       Int
+  description String?
+  classId     Int
+  class       Class   @relation(fields: [classId], references: [id])
+  parentId    Int
+  event       Event   @relation(fields: [parentId], references: [id])
 }
 
 model Tag {
-  id            Int           @default(autoincrement()) @id
-  name          String
-  disciplines   Discipline[]  @relation(references: [id])
-  posts         Post[]        @relation(references: [id])
+  id          Int          @id @default(autoincrement())
+  name        String
+  disciplines Discipline[] @relation(references: [id])
+  posts       Post[]       @relation(references: [id])
 }
 
 model Class {
-  id            Int           @default(autoincrement()) @id
-  name          String
-  objectID      String        @unique
-  thirdGrade    Boolean
-  organising    Boolean       @default(false)
-  users         User[]
-  results       EventResult[]
-  codes         Code[]
+  id              Int           @id @default(autoincrement())
+  name            String
+  objectID        String        @unique
+  thirdGrade      Boolean
+  organising      Boolean       @default(false)
+  users           User[]
+  results         EventResult[]
+  codes           Code[]
+  ciphersDone     Int[]
+  ciphersTime     Int           @default(0)
+  cipherIncorrect Int           @default(0)
 }
 
 model Event {
-  id            Int           @default(autoincrement()) @id
-  name          String
-  startDate     DateTime
-  endDate       DateTime
-  color         String?
-  results       EventResult[]
-  parentId      Int?
-  discipline    Discipline?    @relation(fields: [parentId], references: [id])
+  id         Int           @id @default(autoincrement())
+  name       String
+  startDate  DateTime
+  endDate    DateTime
+  color      String?
+  results    EventResult[]
+  parentId   Int?
+  discipline Discipline?   @relation(fields: [parentId], references: [id])
 }
 
 model Code {
-  id            String          @id
-  number        Int             @default(autoincrement())
-  classes       Class[]
-  qr            Bytes
-  active        Boolean
-  latitude      Float?
-  longitude     Float?
+  id        String  @id
+  number    Int     @default(autoincrement())
+  classes   Class[]
+  qr        Bytes
+  active    Boolean
+  latitude  Float?
+  longitude Float?
 }
 
 model Album {
-  id            Int         @default(autoincrement()) @id
-  name          String
-  link          String
+  id   Int    @id @default(autoincrement())
+  name String
+  link String
 }
 
 enum Role {
