@@ -67,7 +67,7 @@ const MainPost: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
         />
       )}
     >
-      <Layout>
+      <Layout className="mainContent">
         <Header />
         <Layout>
           <Content className="content">

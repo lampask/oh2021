@@ -21,7 +21,7 @@ const Results: React.FC = (props) => {
         />
       )}
     >
-      <Layout>
+      <Layout className="mainContent">
         <Header /> 
         <Content className="content">
           <ul>

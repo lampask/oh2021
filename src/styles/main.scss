@@ -8,17 +8,18 @@
   src: local('OHGamca'), url(../font/OhHypnozaBroken-Regular.ttf) format('truetype');
 }
 
-.full {
-  width: 100wv;
-  position: relative;
-  min-height: 100vh;
+html, body, #__next, .mainContent, .full {
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
 
 .mainContent {
-  margin: auto 0;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 2.5rem;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  display: table !important;
+  overflow: hidden;
 }
 
 .limit {
@@ -144,10 +145,21 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 4rem;
+  width: 100% !important;
+  display: table-row !important;
+  height: 0;
+  .fcontent {
+    padding: 0.5rem 0.2rem;
+    min-height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      padding-right: 0.2rem;
+      width: 100px;
+      max-height: 3rem;
+    }
+  }
 }
 
 .content {

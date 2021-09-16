@@ -1,5 +1,5 @@
 export const fetchCiphers = async () => {
-  console.log('test')
   const ciphers = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ciphers/`);
-  return {ciphers: await ciphers.json()};
+  const cres = await ciphers.json()
+  return {ciphers: cres};
 };

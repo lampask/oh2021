@@ -42,8 +42,14 @@ const sifrovacka: React.FC = (props: InferGetServerSidePropsType<typeof getServe
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      if (res.status == 202) message.success("Je to dobre")
-      if (res.status == 200) message.error("Je to zle")
+      const result = await res.json()
+      if (result.valid) {
+        message.success("Je to dobre")
+        setSub(<span>Odovzdať</span>)
+      } else {
+        message.error("Je to zle")
+        setSub(<span>Odovzdať</span>)
+      }
 
     } catch (error) {
       console.error(error)
