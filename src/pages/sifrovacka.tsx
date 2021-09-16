@@ -41,7 +41,7 @@ const sifrovacka: React.FC = (props: InferGetServerSidePropsType<typeof getServe
     try {
       setSub(<Spin />)
       const res = await fetch('/api/cipher', {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })

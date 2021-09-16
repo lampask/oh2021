@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/client'
 import prisma from '../../../lib/clients/prisma';
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
+  if (req.method === "PUT") {
     try {
       const { name, answer } = req.body
       const session = await getSession({ req })
@@ -16,7 +16,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         {
           if (cipher?.id && curClass?.name && !curClass.ciphersDone.includes(cipher.id)) {
             var duration = moment.duration(moment(new Date()).diff(cipher.startTime));
-            var hours = Math.floor(duration.asHours());
+            var hours = Math.ceil(duration.asHours());
             var oldHours = curClass.ciphersTime
 
             await prisma.class.updateMany({
@@ -50,6 +50,24 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         }
       }
       return res.status(200).end();
+    } catch (error) {
+      console.log(error)
+      return res.status(422).end();
+    }
+  } else if (req.method === "POST") {
+    try {
+      const { name, answer, start } = req.body
+      const session = await getSession({ req })
+      if (session?.user.role != 'ADMIN') if (session?.user.role != 'EDITOR') return res.status(401).end();
+      const event = await prisma.sifra.create({
+        data: {
+          name: name,
+          answer: answer,
+          startTime: start,
+        }
+      })
+      console.log(event)
+      return res.status(201).json(event);
     } catch (error) {
       console.log(error)
       return res.status(422).end();
