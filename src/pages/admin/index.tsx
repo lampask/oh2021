@@ -53,12 +53,14 @@ const Dashboard: React.FC = (props: InferGetServerSidePropsType<typeof getServer
         <ul>
           Vytvoriť:
           <li><Link href="/admin/create">Vytvoriť nový príspevok</Link></li>
+          <li><Link href="/admin/create/tag">Vytvoriť nový tag</Link></li>
           <li><Link href="/admin/create/event">Vytvoriť novú udalosť</Link></li>
           <li><Link href="/admin/create/album">Vytvoriť nový album</Link></li>
           <li><Link href="/admin/create/result">Vytvoriť nový výsledok</Link></li>
           <li><Link href="/admin/create/discipline">Vytvoriť novú disciplínu</Link></li>
           Ostatné:
           <li><Link href="/admin/posts">Spravovať príspevky</Link></li>
+          <li><Link href="/admin/tags">Spravovať tagy</Link></li>
           <li><Link href="/admin/events">Spravovať udalosti</Link></li>
           <li><Link href="/admin/albums">Spravovať albumy</Link></li>
           <li><Link href="/admin/results">Spravovať výsledky</Link></li>
