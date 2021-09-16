@@ -22,10 +22,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         }
       });
       return res.status(200).json(ciphers);
-    } else {
-      throw new Error(
-        `The HTTP ${req.method} method is not supported at this route.`
-      )
-    }
+    } else return res.status(401).end();
+  } else {
+    throw new Error(
+      `The HTTP ${req.method} method is not supported at this route.`
+    )
   }
 }

@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
-import Router from 'next/router'
 import { Main } from '../layout/Main'
 import { Meta } from '../layout/Meta'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getSession } from 'next-auth/client'
-import {  Form, Select, Input, Layout, Button, Spin } from 'antd'
+import {  Form, Select, Input, Layout, Button, Spin, message } from 'antd';
 import {Sifra} from '.prisma/client'
 import {useQuery} from 'react-query'
 import {fetchCiphers} from '../../lib/queries/cipher-queries'
 import Header from '../layout/AppHeader';
 import Footer from '../layout/AppFooter';
-import Link from 'next/link'
-import { redirect } from 'next/dist/server/api-utils'
 
 
 const { Content } = Layout;
@@ -45,8 +42,8 @@ const sifrovacka: React.FC = (props: InferGetServerSidePropsType<typeof getServe
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      if (res.status == 202) await Router.push('/dobre')
-      if (res.status == 200) await Router.push('/zle')
+      if (res.status == 202) message.success("Je to dobre")
+      if (res.status == 200) message.error("Je to zle")
 
     } catch (error) {
       console.error(error)
@@ -69,6 +66,7 @@ const sifrovacka: React.FC = (props: InferGetServerSidePropsType<typeof getServe
     >
       <Header/>
       <Content>
+        <br/>
         <Form
           name="validate_other"
           {...formItemLayout}

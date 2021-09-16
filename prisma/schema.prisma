@@ -171,8 +171,8 @@ model Class {
   results         EventResult[]
   codes           Code[]
   ciphersDone     Int[]
-  ciphersTime     Int
-  cipherIncorrect Int
+  ciphersTime     Int           @default(0)
+  cipherIncorrect Int           @default(0)
 }
 
 model Event {
