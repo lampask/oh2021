@@ -41,6 +41,14 @@ const columns = [
     ),
   },
   {
+    title: 'Tagy',
+    dataIndex: 'tags',
+    key: 'tags',
+    render: (text, record) => (
+      record.tags?.map(x => (<Tag>{x.name}</Tag>))
+    ),
+  },
+  {
     title: 'Akcia',
     key: 'action',
     render: (text, record) => (

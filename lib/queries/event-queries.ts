@@ -15,3 +15,9 @@ export const fetchResults = async () => {
   const data = await res.json();
   return data;
 };
+
+export const fetchTags = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tag`);
+  const data = await res.json();
+  return data;
+};

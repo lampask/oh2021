@@ -10,13 +10,14 @@ import AdminHeader from '../../../layout/AdminHeader'
 import Footer from '../../../layout/AppFooter'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import {  Form, Select, Input, Layout, Button, Spin } from 'antd'
+import {  Form, Select, Input, Layout, Button, Spin, Tag } from 'antd'
 import {fetchPost} from '../../../../lib/queries/post-queries'
 import queryClient from '../../../../lib/clients/react-query'
 import { dehydrate } from 'react-query/hydration'
 import {useQuery} from 'react-query'
 import {fetchDisciplines} from '../../../../lib/queries/discipline-queries'
 import {Category, Discipline} from '.prisma/client'
+import {fetchTags} from '../../../../lib/queries/event-queries'
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -61,6 +62,7 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
   const [session, loading] = useSession()
   const { isLoading, isError, data, error } = useQuery("disciplines", fetchDisciplines)
   const { data: pres, isLoading: propLoad } = useQuery(["post", props.id], () => fetchPost(props.id));
+  const { data: tagdata } = useQuery("tags", fetchTags)
   const [sub, setSub] = useState(<span>Upraviť</span>)
   const [content, setContent] = useState(pres?.content)
 
@@ -130,7 +132,7 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
           <Form.Item
             name="discipline"
             label="Disciplína"
-            initialValue={pres?.disciplines[0].id}
+            initialValue={pres?.disciplines[0]?.id}
             hasFeedback
             rules={[{ required: false }]}
           >
@@ -162,7 +164,12 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
             initialValue={pres?.tags?.map(x => x.id)}
             rules={[{ required: false, type: 'array' }]}
           >
-            <Select mode="multiple" disabled={true} placeholder="Vyberte tagy">
+            <Select mode="multiple" placeholder="Vyberte tagy">
+              {
+                tagdata?.map((tag: Tag) => (
+                  <Option value={tag.id}>{tag.name}</Option>
+                ))
+              }
             </Select>
           </Form.Item>
           <Form.Item
