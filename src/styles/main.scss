@@ -64,6 +64,13 @@ html, body, #__next, .mainContent, .full {
 
 }
 
+.mapboxgl-marker  {
+  ::before {
+    content: "⚫";
+  }
+  color: red !important;
+}
+
 .sider {
   @media screen and (max-width: 600px){
     width: 100% !important;

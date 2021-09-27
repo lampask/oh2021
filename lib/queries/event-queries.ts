@@ -27,3 +27,9 @@ export const fetchQR = async (id: string) => {
   const data = await res.json();
   return data;
 }
+
+export const fetchAdminQR = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/q`);
+  const data = await res.json();
+  return data;
+};
