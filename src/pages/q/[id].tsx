@@ -30,7 +30,7 @@ const qr: React.FC<{id: string}> = (props: InferGetServerSidePropsType<typeof ge
   const [lregister, setRregister] = useState(<>Zaregistrovať</>);
   const [lactivate, setActivate] = useState(<>Aktivovať pre všetkých</>);
   const { id } = router.query
-  const { isLoading, data } = useQuery(["SQR", props.id],() => fetchQR(props.id));
+  const { isLoading, data } = useQuery(["SQR", props.id],() => fetchQR(props.id), { refetchOnWindowFocus: false });
 
   const activate = async() => {
     if (navigator.geolocation) {
