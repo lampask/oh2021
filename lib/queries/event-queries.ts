@@ -21,3 +21,9 @@ export const fetchTags = async () => {
   const data = await res.json();
   return data;
 };
+
+export const fetchQR = async (id: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/q/${id}`);
+  const data = await res.json();
+  return data;
+}
