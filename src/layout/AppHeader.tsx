@@ -14,16 +14,16 @@ type IHeaderProps = {
  const { Header } = Layout;
 
 const AppHeader: React.FC<IHeaderProps> = (props) => {
- 
+
   return (
     <Header className="header">
       <Authbar />
       <Link href={`${process.env.NEXTAUTH_URL}`}>
           <div className="titleArea">
             <div className="logo"><Image src={`${process.env.baseUrl}/logo_oh_ciernabielafinal_version.svg`} /></div>
-            <h1>{Config.title}</h1>
+            <div className="logo2"><Image src={`${process.env.baseUrl}/hypnoza_logo.svg`} /></div>
           </div>
-      </Link>        
+      </Link>
       {props.description ? <div className="text-xl">{Config.description}</div> : <></>}
       <Navbar active={props.active!}/>
     </Header>
