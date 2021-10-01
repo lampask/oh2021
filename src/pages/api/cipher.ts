@@ -32,7 +32,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             })
 
           }
-          return res.status(202).end();
+          return res.status(200).json({valid: true});
         } else {
           if (cipher?.id && curClass?.name && !curClass.ciphersDone.includes(cipher.id)) {
             var oldHours = curClass.ciphersTime
@@ -49,7 +49,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           }
         }
       } else return res.status(401).end();
-      return res.status(200).end();
+      return res.status(200).json({valid: false});
     } catch (error) {
       console.log(error)
       return res.status(422).end();

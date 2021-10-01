@@ -66,7 +66,7 @@ const Dashboard: React.FC = (props: InferGetServerSidePropsType<typeof getServer
           <li><Link href="/admin/albums">Spravovať albumy</Link></li>
           <li><Link href="/admin/results">Spravovať výsledky</Link></li>
           <li><Link href="/admin/disciplines">Spravovať disciplíny</Link></li>
-          <li><Link href="/admin/q">QR Codes</Link></li>
+          <li><Link href="/admin/qr">QR Codes</Link></li>
         </ul>
       </Content>
       <Footer />

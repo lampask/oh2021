@@ -1,19 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/client'
-import prisma from '../../../lib/clients/prisma'
+import { getSession, session } from 'next-auth/client'
+import prisma from '../../../../lib/clients/prisma'
 import QRCode from 'qrcode'
 
 // POST /api/q
-// Required fields in body: id, number
+// Required fields in body: id
 // Optional fields in body: latitude, longitude
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { id, number, latitude, longitude } = req.body
+      const { id, latitude, longitude } = req.body
       const session = await getSession({ req })
       if (session) {
-        if (session?.user.role == 'ADMIN' || session?.user.role == 'EDITOR') {
-          if (latitude != null && longitude != null) {
+        if (latitude != null && longitude != null) {
+          if (session?.user.role == 'ADMIN' || session?.user.role == 'EDITOR') {
             const exc = await prisma.code.findUnique({ where: { id: id  } })
             if (exc != null) {
               if (exc.active == false) {
@@ -24,11 +24,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                 }})
               }
             } else {
-              const durl = await QRCode.toDataURL('text')
+              const durl = await QRCode.toDataURL(`https://oh.gamca.sk/q/${id}`)
               const code = await prisma.code.create({
-                data: { 
+                data: {
                   id: id,
-                  number: number,
+                  number: 0,
                   qr: Buffer.from(durl, 'base64'),
                   active: true,
                   latitude: latitude,
@@ -57,23 +57,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       return res.status(422).end();
     }
   } else if (req.method === "GET") {
+    const session = await getSession({ req })
+    if (!session) return res.status(401).end();
     try {
-      const session = await getSession({ req })
-      if (!session) return res.status(401).end();
-      const posts = await prisma.post.findMany({
+      if (session?.user.role != 'ADMIN' && session?.user.role != 'EDITOR') return res.status(401).end();
+      const qrs = await prisma.code.findMany({
         include: {
-          author: {
+          classes: {
             select: { name: true },
           },
         },
-        where: { published: true },
-        orderBy: [
-          {
-            createdAt: "desc",
-          },
-        ],
       });
-      return res.status(200).json(posts);
+      return res.status(200).json(qrs);
     } catch (error) {
       return res.status(422).end();
     }

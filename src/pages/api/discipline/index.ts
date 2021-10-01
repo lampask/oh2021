@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client'
 import prisma from '../../../../lib/clients/prisma'
+import results from '../../results'
 
 // POST /api/discipline
 // Required fields in body: name
@@ -56,6 +57,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             select: {
               id: true,
               name: true,
+              endDate: true,
               results: {
                 select: {
                   class: {

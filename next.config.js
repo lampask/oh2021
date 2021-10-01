@@ -31,5 +31,6 @@ module.exports = withBundleAnalyzer({
     AZURE_CLIENT_SECRET: process.env.AZURE_CLIENT_SECRET,
     AZURE_TENANT_ID: process.env.AZURE_TENANT_ID,
     JWT_SECRET: process.env.JWT_SECRET,
+    API_KEY: process.env.API_KEY,
   }
 });

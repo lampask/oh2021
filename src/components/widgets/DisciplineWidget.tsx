@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Category, Post, Tag } from "@prisma/client";
+import { Category, Post, Tag, Event } from "@prisma/client";
+import {parseISO} from "date-fns";
 
 export type DisciplineWidgetProps = {
   id: number
@@ -13,8 +14,9 @@ export type DisciplineWidgetProps = {
 
 const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ discipline }) => {
   const update = () => {
-    if (discipline.deadline != undefined) {
-      var difference = discipline.deadline.getTime()-Date.now();
+    const deadline = Math.max(...discipline?.events?.map((x: Event) => parseISO(x.endDate.toString()).getTime()))
+    if (deadline != undefined) {
+      var difference = deadline-Date.now();
       if (difference > 0) {
         return {
           status: true,
@@ -46,7 +48,7 @@ const DisciplineWidget: React.FC<{ discipline: DisciplineWidgetProps }> = ({ dis
 
   return (
     <span>
-      {time ? (time.status ? `${time.days}:${time.hours}:${time.minutes}:${time.seconds}` : "Disciplína skončila") : "Bez časového obmedzenia"}
+      {time ? (time.status ? `Deadline: ${time.days}:${time.hours}:${time.minutes}:${time.seconds}` : "Disciplína skončila") : "Bez časového obmedzenia"}
     </span>
   );
 };

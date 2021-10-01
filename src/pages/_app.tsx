@@ -5,7 +5,7 @@ import { Hydrate } from "react-query/hydration";
 import { AppProps } from 'next/app'
 import { Provider as AuthProvider } from 'next-auth/client'
 import queryClient from "../../lib/clients/react-query";
-
+import 'mapbox-gl/dist/mapbox-gl.css';
 import '../styles/main.scss'
 import 'antd/dist/antd.css';
 import '../styles/openmoji-black-awesome.css'

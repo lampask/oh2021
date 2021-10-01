@@ -56,7 +56,7 @@ const MainDisc: React.FC<{id: Number}> = (props: InferGetServerSidePropsType<typ
         />
       )}
     >
-      <Layout>
+      <Layout className="mainContent">
         <DisciplineHeader setter={setPageNum} discipline={data} />
         <Layout className="limit-reversed">
           <Content className="content">

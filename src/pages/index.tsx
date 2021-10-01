@@ -43,7 +43,7 @@ const Index = (props: InferGetServerSidePropsType<typeof getServerSideProps>) =>
         />
       )}
     >
-      <Layout>
+      <Layout className="mainContent">
         <Header />
         <Layout className="limit">
           <Content className="content">

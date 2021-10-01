@@ -83,7 +83,7 @@ const Disciplines: React.FC = (props: InferGetServerSidePropsType<typeof getServ
         />
       )}
     >
-      <Layout>
+      <Layout className="mainContent">
         <Header />
         <Layout className="limit">
           {session ? <>
