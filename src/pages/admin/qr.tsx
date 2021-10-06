@@ -87,10 +87,6 @@ const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
     table = <Table columns={columns} dataSource={data} />
   }
 
-<<<<<<< Updated upstream
-  console.log(data)
-=======
->>>>>>> Stashed changes
   return (
     <Main
       meta={
