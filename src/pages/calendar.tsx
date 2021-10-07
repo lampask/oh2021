@@ -71,11 +71,13 @@ const BigCalendar: React.FC = (props: InferGetServerSidePropsType<typeof getServ
         description="Kalendár udalostí"
       />
     )}>
-      <Header />
-        <Content>
-         <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />
-        </Content>
-      <Footer />
+      <Layout>
+        <Header />
+          <Content>
+          <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />
+          </Content>
+        <Footer />
+      </Layout>
     </Main>
   )
 }

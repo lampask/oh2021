@@ -3,7 +3,7 @@ import { Main } from '../layout/Main'
 import { Meta } from '../layout/Meta'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { getSession } from 'next-auth/client'
-import {  Form, Select, Input, Layout, Button, Spin, message } from 'antd';
+import {  Form, Select, Input, Button, Spin, message, Layout } from 'antd';
 import {Sifra} from '.prisma/client'
 import {useQuery} from 'react-query'
 import {fetchCiphers} from '../../lib/queries/cipher-queries'
@@ -70,8 +70,9 @@ const sifrovacka: React.FC = (props: InferGetServerSidePropsType<typeof getServe
         />
       )}
     >
+      <Layout className="mainContent">
       <Header/>
-      <Content>
+      <Content className="content">
         <br/>
         <Form
           name="validate_other"
@@ -119,6 +120,7 @@ const sifrovacka: React.FC = (props: InferGetServerSidePropsType<typeof getServe
         <br/>
       </Content>
       <Footer />
+      </Layout>
     </Main>
   )
 }
