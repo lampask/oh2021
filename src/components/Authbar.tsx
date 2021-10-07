@@ -3,7 +3,6 @@ import Link from 'next/link';
 import React, { ReactNode } from 'react';
 import { Menu, Spin, Avatar } from 'antd';
 import PPicture from './PPicture';
-import useLayoutEffect from '../utils/useIsomorphicLayoutEffect';
 
 type IAuthbarProps = {
   children?: ReactNode
@@ -43,19 +42,17 @@ const Authbar: React.FC<IAuthbarProps> = (props) => {
   
   return (
     <div className="menuContainer">
-      <div>
-        <Menu mode="horizontal">
-          {authbar}
-          {loading ? null :
-          <Menu.Item key={"session"}>
-            <Link href={!session ? '/api/auth/signin' : '/api/auth/signout'}>
-              <a href="" onClick={!session ? null : () => signOut()}>
-                {!session ? "Prihlásiť sa cez GAMČA účet" : "Odlásiť sa"}
-              </a>
-            </Link>
-          </Menu.Item>}
-        </Menu>
-      </div>
+      <Menu mode="horizontal">
+        {authbar}
+        {loading ? null :
+        <Menu.Item key={"session"}>
+          <Link href={!session ? '/api/auth/signin' : '/api/auth/signout'}>
+            <a href="" onClick={() => !session ? null : signOut()}>
+              {!session ? "Prihlásiť sa cez GAMČA účet" : "Odlásiť sa"}
+            </a>
+          </Link>
+        </Menu.Item>}
+      </Menu>
     </div>
   )
 };

@@ -9,58 +9,47 @@
 }
 
 html, body, #__next, .mainContent, .full {
-  height: 100%;
+  @media screen and (min-width: 700px){
+    height: 100%;
+  }
   width: 100%;
   margin: 0;
 }
 
 .mainContent {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  display: table !important;
+  display: flex;
+  @media screen and (min-width: 700px){
+    display: table !important;
+  }
   overflow: hidden;
 }
 
 .limit {
   max-width: 100vw;
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: 700px){
     flex-direction: column-reverse !important;
   }
 }
 
 .limit-reversed {
   max-width: 100vw;
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: 700px){
     flex-direction: column !important;
   }
 }
 
 .discSider {
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: 700px){
     margin-top: -2rem;
     margin-bottom: 5rem;
   }
 }
 
 .menuContainer {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100%;
-  div {
-    width: 100%;
-    height: 67px;
-    display: inline-flex;
-    justify-content: flex-end;
-    ul {
-      position:relative;
-      z-index:1
-    }
-    ul li:hover > ul{
-      background: white;
-    }
-  }
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  height: 67px;
 }
 
 .QR {
@@ -85,7 +74,7 @@ html, body, #__next, .mainContent, .full {
 }
 
 .sider {
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: 700px){
     width: 100% !important;
   }
   flex: initial !important;
@@ -96,7 +85,6 @@ html, body, #__next, .mainContent, .full {
 }
 
 .header {
-  padding-top: 67px !important;
   background: #fff !important;
   height: auto !important;
   img {
@@ -185,12 +173,11 @@ html, body, #__next, .mainContent, .full {
 .footer {
   width: 100% !important;
   display: table-row !important;
-  height: 0;
 }
 
 .fcontent {
-  padding: 0.5rem 0.2rem;
-  min-height: 3rem;
+  margin-left: 2rem;
+  height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -198,8 +185,9 @@ html, body, #__next, .mainContent, .full {
 
 .sponsors {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  flex-flow: wrap;
   img {
     padding-right: 0.2rem;
     width: 100px;
@@ -365,7 +353,7 @@ html, body, #__next, .mainContent, .full {
   font-size: 28px;
 }
 .site-calendar-widget {
-  @media screen and (max-width: 600px){
+  @media screen and (max-width: 700px){
     width: fit-content;
   }
   width: 300px;

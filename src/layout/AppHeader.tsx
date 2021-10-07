@@ -30,7 +30,7 @@ const AppHeader: React.FC<IHeaderProps> = (props) => {
         <Link href={"https://bratislava.sk"}><Image preview={false} src="/sponzori/ba logo.png" /></Link>
         <Link href={"https://www.stilus.sk/sk/"}><Image preview={false} src="/sponzori/LOGO_Stilus_2018.svg" /></Link>
         <Link href={"https://www.sli.do"}><Image preview={false} style={{zIndex: "1000"}} src="/sponzori/slido-logo-c79e792.svg" /></Link>
-        <Link href={"https://www.staremesto.sk"}><Image preview={false} style={{margin: "-25px", zoom: "2"}} src="/sponzori/SM-Logo-invert.svg" /></Link>
+        <Link href={"https://www.staremesto.sk"}><Image preview={false} style={{margin: "5px -25px", zoom: "2"}} src="/sponzori/SM-Logo-invert.svg" /></Link>
         </div>
       <Navbar active={props.active!}/>
     </Header>
