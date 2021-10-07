@@ -55,7 +55,7 @@ const CalendarWidget: React.FC<ICalendarProps> = () => {
         <Calendar fullscreen={false} dateCellRender={dateCellRender} onChange={changeHandler} />
       </div>
       <div className="eList">
-        <br />
+        {list.length > 0 ? <br /> : null}
        {isLoading ? <Spin /> :
          list.map((e: Event) => {
           return <Ev key={e.id} event={{
