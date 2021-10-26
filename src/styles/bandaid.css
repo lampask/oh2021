@@ -59,6 +59,15 @@ header.p-4.border-b.border-gray-300 div.ml-96.absolute {
 .logo {
   pointer-events: none !important;
 }
+.ant-page-header-heading {
+  justify-content: center;
+}
+
+/*new post*/
+.ant-form.ant-form-horizontal {
+  padding: 1rem;
+}
+
 
 /*phone*/
 ul.ant-layout-header.ant-menu {
