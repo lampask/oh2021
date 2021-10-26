@@ -22,10 +22,14 @@ const DisciplineHeader: React.FC<IHeaderProps> = (props) => {
     <Header className="header">
       <Authbar />
       <Link href={`${process.env.NEXTAUTH_URL}`}>
-          <div className="smalltitleArea">
+          {/*<div className="smalltitleArea">
             <div className="smalllogo"><Image src={`${process.env.baseUrl}/logo_oh_ciernabielafinal_version.svg`} /></div>
             <h1>{Config.title}</h1>
             {props.description ? <div className="text-xl">{Config.description}</div> : <></>}
+  </div>*/}
+          <div className="titleArea">
+            <div className="logo"><Image src={`${process.env.baseUrl}/logo_oh_ciernabielafinal_version.svg`} /></div>
+            <div className="logo2"><Image preview={false} src={`${process.env.baseUrl}/hypnoza_logo.svg`} /></div>
           </div>
       </Link>
       <div className="discArea">
