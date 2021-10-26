@@ -1,0 +1,129 @@
+/*main stranka*/
+    
+.anticon.anticon-tags {
+  margin-right: 8px;
+}
+section.ant-layout.ant-layout-has-sider.limit {
+  padding: 0 3rem;
+  background: #fff;
+}
+.sponsors {
+  row-gap: .5rem;
+  column-gap: 1rem;
+  margin: 2rem 0 0 0;
+}
+.sponsors .ant-image {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.logo {
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+  -moz-user-drag: none !important;
+}
+.ant-list, .ant-layout-content.content>div {
+  width: 100%;
+}
+
+/*clanok view*/
+.ant-layout-content.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.post {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/*fotky*/
+.ant-layout-content.content ul {
+  margin-top: 1rem;
+}
+
+/*profile page - $prosimta tu mi pridaj classu nejaku, aj na tie ostatne veci*/
+header.p-4.border-b.border-gray-300 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*profile prispevky - $pls pridaj classu*/
+.ant-layout-content div.mt-10,
+header.p-4.border-b.border-gray-300 div.ml-96.absolute {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/*disable clicking on logo*/
+.logo {
+  pointer-events: none !important;
+}
+
+/*phone*/
+ul.ant-layout-header.ant-menu {
+  width: 100% !important
+}
+
+@media (max-width: 600px) {
+  .ant-layout-header.header {
+      padding: 2rem !important;
+  }
+  
+  /*revert padding to save space on mobile*/
+  section.ant-layout.ant-layout-has-sider.limit {
+      padding: 0 !important;
+  }
+  
+  .sponsors {
+      box-sizing: border-box;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start !important;
+  }
+  .sponsors .ant-image:first-of-type() {
+      margin-left: 3rem !important;
+  }
+  
+  /*dual line mobile post view*/
+  .ant-page-header-heading .ant-page-header-heading-left {
+      flex-wrap: wrap !important;
+  }
+  
+  /*main mobile screen*/
+  .ant-layout-content.content .ant-list .ant-list-items .ant-list-item {
+      flex-direction: column;
+  }
+  .ant-layout-content.content .ant-list .ant-list-items .ant-list-item .ant-list-item-meta {
+      width: 100%;
+  }
+  .ant-layout-content.content .ant-list .ant-list-items .ant-list-item .ant-list-item-action {
+      margin-top: 0;
+      max-width: 80%;
+      overflow: hidden;
+      white-space: nowrap;
+  }
+  .ant-list-pagination .ant-pagination {
+      width: min-content;
+      white-space: nowrap;
+  }
+  .ant-list-pagination {
+      display: flex;
+      justify-content: center;
+  }
+  
+  /*admin dashboard*/
+  #__next, .antialiased.full {
+      height: 100%;
+  }
+  .ant-table-pagination-right {
+      justify-content: center;
+  }
+  .ant-layout-content .ul {
+      width: 100vw !important;
+  }
+  .mainContent {
+      flex-direction: column;
+  }
+  
+}

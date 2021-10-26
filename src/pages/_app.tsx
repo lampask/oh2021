@@ -7,6 +7,7 @@ import { Provider as AuthProvider } from 'next-auth/client'
 import queryClient from "../../lib/clients/react-query";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '../styles/main.scss'
+import '../styles/bandaid.css'
 import 'antd/dist/antd.css';
 import '../styles/openmoji-black-awesome.css'
 import "easymde/dist/easymde.min.css"
