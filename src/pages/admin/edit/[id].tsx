@@ -100,7 +100,7 @@ const Edit: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
       )} 
     >
       <AdminHeader />
-      <Content>
+      <Content className="admin">
         <Link href="/admin">&#60;- Back to dashboard</Link>
         {!isLoading && !propLoad && !loading ? <>{pres?.author.id == session?.user.id || session?.user.role == 'ADMIN' ?
         <Form

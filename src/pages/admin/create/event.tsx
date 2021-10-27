@@ -73,7 +73,7 @@ const EventDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServe
       )}
     >
       <AdminHeader />
-      <Content>
+      <Content className="admin">
         <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <Form
           name="validate_other"

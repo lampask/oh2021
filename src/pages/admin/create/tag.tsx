@@ -68,7 +68,7 @@ const TagDraft: React.FC = (props: InferGetServerSidePropsType<typeof getServerS
       )}
     >
       <AdminHeader />
-      <Content>
+      <Content className="admin">
         <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <Form
           name="validate_other"

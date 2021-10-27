@@ -95,7 +95,7 @@ const Tags: React.FC = (props: InferGetServerSidePropsType<typeof getServerSideP
       }
     >
       <AdminHeader />
-      <Content>
+      <Content className="admin">
         <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <h6 className="underline">List všetkých tagov</h6>
         { session ?

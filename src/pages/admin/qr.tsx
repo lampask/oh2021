@@ -97,7 +97,7 @@ const Posts: React.FC = (props: InferGetServerSidePropsType<typeof getServerSide
       }
     >
       <AdminHeader />
-      <Content>
+      <Content className="admin">
         <Link href="/admin">&#60;- Naspäť na dashboard</Link>
         <h6 className="underline">List všetkých qrkódov</h6>
         { session ? <>
